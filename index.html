@@ -1,0 +1,401 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101426">
+<title>SitePilot IA — Prépare ton projet</title>
+
+<style>
+:root {
+  --bg: #0b1020;
+  --panel: #151d30;
+  --border: #29364d;
+  --accent: #8b9cff;
+  --text: #f4f6ff;
+  --muted: #a9b4ca;
+}
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 15px system-ui, sans-serif;
+}
+
+header {
+  padding: 17px 20px;
+  border-bottom: 1px solid var(--border);
+  background: #101426;
+}
+
+nav {
+  max-width: 900px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.logo { font-weight: 800; font-size: 20px; }
+.logo span { color: var(--accent); }
+
+main {
+  max-width: 760px;
+  margin: 36px auto;
+  padding: 0 16px;
+}
+
+.hero { text-align: center; margin-bottom: 26px; }
+
+.tag {
+  display: inline-block;
+  padding: 7px 12px;
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  color: var(--accent);
+  font-size: 13px;
+}
+
+h1 {
+  font-size: clamp(29px, 7vw, 45px);
+  line-height: 1.15;
+  margin: 18px 0 12px;
+}
+
+p { line-height: 1.65; }
+.muted { color: var(--muted); }
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+label {
+  display: block;
+  margin: 16px 0 8px;
+  font-weight: 600;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 13px;
+  color: var(--text);
+  background: #0c1426;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font: inherit;
+}
+
+textarea { min-height: 115px; resize: vertical; }
+
+button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 16px;
+  border: 0;
+  border-radius: 11px;
+  background: var(--accent);
+  color: #101426;
+  font-weight: 800;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+button:disabled { opacity: .55; }
+
+.secondary {
+  background: #29344d;
+  color: var(--text);
+}
+
+.result {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.75;
+}
+
+.hidden { display: none; }
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.feature {
+  background: #10182a;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+}
+
+.feature div { font-size: 23px; }
+.feature small { color: var(--muted); }
+
+footer {
+  text-align: center;
+  padding: 25px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+@media(max-width: 480px) {
+  main { margin-top: 25px; }
+  .card { padding: 15px; }
+  .features { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <nav>
+    <div class="logo">SitePilot <span>IA</span></div>
+    <span class="muted">Assistant de projet</span>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <span class="tag">✦ Prépare ton projet avec l'IA</span>
+    <h1>Ton idée mérite<br>un vrai site web.</h1>
+    <p class="muted">
+      Décris ton idée. Nous t'aiderons à clarifier tes besoins
+      et à préparer les étapes de construction de ton site.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>Présente ton projet</h2>
+    <p class="muted">
+      Ces informations permettront à l'agent de mieux comprendre
+      ce que tu veux construire.
+    </p>
+
+    <form id="projectForm">
+      <label for="nom">Nom du projet</label>
+      <input id="nom" maxlength="80"
+        placeholder="Ex. Ma boutique en ligne" required>
+
+      <label for="type">Quel type de site souhaites-tu ?</label>
+      <select id="type">
+        <option value="Site vitrine">Site vitrine</option>
+        <option value="Boutique en ligne">Boutique en ligne</option>
+        <option value="Blog">Blog</option>
+        <option value="Application web">Application web</option>
+        <option value="Plateforme éducative">Plateforme éducative</option>
+        <option value="Autre">Autre projet</option>
+      </select>
+
+      <label for="public">À qui s'adresse le site ?</label>
+      <input id="public" maxlength="150"
+        placeholder="Ex. Clients, élèves, commerçants">
+
+      <label for="fonctions">Fonctionnalités souhaitées</label>
+      <textarea id="fonctions" maxlength="2000"
+        placeholder="Ex. Présenter mes produits, recevoir des commandes, contacter les clients..."></textarea>
+
+      <label for="budget">Budget de départ</label>
+      <select id="budget">
+        <option value="Gratuit">Gratuit</option>
+        <option value="Petit budget">Petit budget</option>
+        <option value="Budget flexible">Budget flexible</option>
+      </select>
+
+      <button id="submitButton" type="submit">
+        ✦ Analyser mon projet
+      </button>
+    </form>
+  </section>
+
+  <section class="features">
+    <div class="feature">
+      <div>🎯</div>
+      <strong>Clarifier</strong><br>
+      <small>Définir les besoins</small>
+    </div>
+    <div class="feature">
+      <div>🧠</div>
+      <strong>Planifier</strong><br>
+      <small>Préparer les étapes</small>
+    </div>
+    <div class="feature">
+      <div>🛠️</div>
+      <strong>Construire</strong><br>
+      <small>Préparer la réalisation</small>
+    </div>
+  </section>
+
+  <section class="card" id="resultCard" style="margin-top:16px">
+    <h2>Analyse de ton projet</h2>
+    <p id="status" class="muted">
+      Ton projet apparaîtra ici après l'analyse.
+    </p>
+    <div id="result" class="result"></div>
+    <button id="copyButton" class="secondary hidden" type="button">
+      Copier le résultat
+    </button>
+  </section>
+</main>
+
+<footer>
+  SitePilot IA · Un projet à la fois, une étape à la fois.
+</footer>
+
+<script>
+// Adresse du Worker Cloudflare à configurer.
+// Laisser vide tant que le Worker n'est pas déployé.
+const WORKER_URL = "";
+
+const form = document.getElementById("projectForm");
+const statusText = document.getElementById("status");
+const result = document.getElementById("result");
+const copyButton = document.getElementById("copyButton");
+const submitButton = document.getElementById("submitButton");
+
+function preparerPrompt(projet) {
+  return `
+Tu es SitePilot IA, un assistant spécialisé dans la préparation
+de projets de sites web.
+
+Analyse le projet ci-dessous et réponds en français simple.
+
+Nom : ${projet.nom}
+Type : ${projet.type}
+Public : ${projet.public || "Non précisé"}
+Fonctionnalités : ${projet.fonctions || "À définir"}
+Budget : ${projet.budget}
+
+Présente ta réponse avec ces rubriques :
+1. Résumé du projet
+2. Objectif principal
+3. Pages nécessaires
+4. Fonctionnalités à développer
+5. Technologies recommandées
+6. Plan de réalisation en étapes
+7. Coûts potentiels et options gratuites
+8. Points à vérifier avant le lancement
+
+N'affirme pas qu'une fonctionnalité est déjà construite.
+Distingue clairement les recommandations des actions réalisées.
+Ne demande pas de données confidentielles.
+`;
+}
+
+function analyserLocal(projet) {
+  const pages = {
+    "Site vitrine": ["Accueil", "À propos", "Services", "Contact"],
+    "Boutique en ligne": ["Accueil", "Catalogue", "Produit", "Panier", "Contact"],
+    "Blog": ["Accueil", "Articles", "Article détaillé", "À propos"],
+    "Application web": ["Accueil", "Tableau de bord", "Paramètres"],
+    "Plateforme éducative": ["Accueil", "Cours", "Leçons", "Progression"],
+    "Autre": ["Accueil", "Présentation", "Fonctionnalités", "Contact"]
+  };
+
+  return `PROJET : ${projet.nom}
+
+1. OBJECTIF
+Créer un projet de type : ${projet.type}.
+
+2. PUBLIC CIBLE
+${projet.public || "À préciser avec le porteur du projet."}
+
+3. PAGES À PRÉVOIR
+${pages[projet.type].map((p, i) => `${i + 1}. ${p}`).join("\n")}
+
+4. FONCTIONNALITÉS
+${projet.fonctions || "Lister les fonctionnalités prioritaires avant de développer."}
+
+5. PLAN DE RÉALISATION
+1. Confirmer les besoins et les utilisateurs.
+2. Dessiner les pages principales.
+3. Construire l'interface HTML et CSS.
+4. Ajouter les fonctionnalités JavaScript.
+5. Tester sur téléphone.
+6. Préparer l'hébergement et la sécurité.
+
+6. BUDGET
+Budget annoncé : ${projet.budget}.
+Des services gratuits peuvent convenir pour un prototype.
+Un domaine, un hébergement ou des services API peuvent coûter de l'argent.
+
+MODE LOCAL : cette analyse est un modèle de départ généré
+par JavaScript, pas une réponse d'un modèle de langage IA.`;
+}
+
+form.addEventListener("submit", async event => {
+  event.preventDefault();
+
+  const projet = {
+    nom: document.getElementById("nom").value.trim(),
+    type: document.getElementById("type").value,
+    public: document.getElementById("public").value.trim(),
+    fonctions: document.getElementById("fonctions").value.trim(),
+    budget: document.getElementById("budget").value
+  };
+
+  if (!projet.nom) return;
+
+  submitButton.disabled = true;
+  statusText.textContent = "Analyse en cours...";
+  result.textContent = "";
+  copyButton.classList.add("hidden");
+
+  try {
+    let texte;
+
+    if (WORKER_URL) {
+      const response = await fetch(WORKER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          mission: preparerPrompt(projet)
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.erreur || "Erreur du service IA");
+      }
+
+      texte = data.reponse;
+      statusText.textContent = "Analyse réalisée par le LLM.";
+    } else {
+      texte = analyserLocal(projet);
+      statusText.textContent =
+        "Mode démonstration : connecte le Worker pour utiliser un LLM.";
+    }
+
+    result.textContent = texte;
+    copyButton.classList.remove("hidden");
+
+  } catch (error) {
+    statusText.textContent = "Impossible de terminer l'analyse.";
+    result.textContent = error.message;
+  } finally {
+    submitButton.disabled = false;
+  }
+});
+
+copyButton.addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(result.textContent);
+    copyButton.textContent = "Copié !";
+  } catch {
+    copyButton.textContent = "Copie indisponible dans ce navigateur";
+  }
+});
+</script>
+
+</body>
+</html>
