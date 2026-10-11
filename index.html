@@ -3,399 +3,645 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#101426">
-<title>SitePilot IA — Prépare ton projet</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101827">
+<title>SitePilot IA — Créateur de projets web</title>
 
 <style>
 :root {
-  --bg: #0b1020;
-  --panel: #151d30;
-  --border: #29364d;
-  --accent: #8b9cff;
-  --text: #f4f6ff;
-  --muted: #a9b4ca;
+  --bg: #0b1120;
+  --panel: #121c30;
+  --panel2: #18243b;
+  --text: #f4f7ff;
+  --muted: #a7b4cc;
+  --blue: #5685ff;
+  --cyan: #55d6d0;
+  --border: #2a3852;
+  --green: #5ce0a1;
+  --red: #ff8585;
 }
+
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font: 15px system-ui, sans-serif;
+  font-family: system-ui, Arial, sans-serif;
+  line-height: 1.6;
 }
 
 header {
-  padding: 17px 20px;
+  padding: 22px 16px;
   border-bottom: 1px solid var(--border);
-  background: #101426;
+  background: #101827;
 }
 
-nav {
-  max-width: 900px;
+.header-inner, main, footer {
+  width: min(100% - 28px, 950px);
   margin: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
 }
 
-.logo { font-weight: 800; font-size: 20px; }
-.logo span { color: var(--accent); }
-
-main {
-  max-width: 760px;
-  margin: 36px auto;
-  padding: 0 16px;
+.logo {
+  font-size: 23px;
+  font-weight: 800;
+  letter-spacing: -.5px;
 }
 
-.hero { text-align: center; margin-bottom: 26px; }
+.logo span { color: var(--cyan); }
 
-.tag {
-  display: inline-block;
-  padding: 7px 12px;
-  border: 1px solid var(--border);
-  border-radius: 30px;
-  color: var(--accent);
-  font-size: 13px;
+.tagline {
+  color: var(--muted);
+  margin-top: 3px;
+  font-size: 14px;
 }
 
-h1 {
-  font-size: clamp(29px, 7vw, 45px);
+.hero {
+  padding: 35px 0 22px;
+}
+
+.hero h1 {
+  font-size: clamp(27px, 5vw, 42px);
   line-height: 1.15;
-  margin: 18px 0 12px;
+  margin: 0 0 13px;
 }
 
-p { line-height: 1.65; }
-.muted { color: var(--muted); }
+.hero h1 span {
+  color: var(--cyan);
+}
+
+.hero p {
+  color: var(--muted);
+  max-width: 650px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  background: #183c3a;
+  color: var(--cyan);
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  padding-bottom: 35px;
+}
 
 .card {
   background: var(--panel);
   border: 1px solid var(--border);
-  border-radius: 17px;
+  border-radius: 18px;
   padding: 20px;
-  margin-bottom: 16px;
+  min-width: 0;
+}
+
+.card h2 {
+  margin: 0 0 5px;
+  font-size: 21px;
+}
+
+.description {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 14px;
 }
 
 label {
   display: block;
-  margin: 16px 0 8px;
-  font-weight: 600;
+  margin: 16px 0 7px;
+  font-weight: 650;
+  font-size: 14px;
 }
 
 input, select, textarea {
+  display: block;
   width: 100%;
-  padding: 13px;
+  padding: 13px 12px;
   color: var(--text);
-  background: #0c1426;
+  background: #0c1425;
   border: 1px solid var(--border);
   border-radius: 10px;
+  outline: none;
   font: inherit;
 }
 
-textarea { min-height: 115px; resize: vertical; }
-
-button {
-  width: 100%;
-  padding: 14px;
-  margin-top: 16px;
-  border: 0;
-  border-radius: 11px;
-  background: var(--accent);
-  color: #101426;
-  font-weight: 800;
-  font-size: 15px;
-  cursor: pointer;
+input:focus, select:focus, textarea:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 2px #5685ff25;
 }
 
-button:disabled { opacity: .55; }
+textarea {
+  min-height: 95px;
+  resize: vertical;
+}
+
+button {
+  border: 0;
+  border-radius: 11px;
+  padding: 13px 16px;
+  font: inherit;
+  font-weight: 750;
+  cursor: pointer;
+  transition: opacity .2s, transform .2s;
+}
+
+button:active { transform: scale(.98); }
+button:disabled { opacity: .55; cursor: wait; }
+
+.primary {
+  color: white;
+  background: linear-gradient(120deg, #4776ff, #6b58ee);
+  width: 100%;
+  margin-top: 22px;
+}
 
 .secondary {
-  background: #29344d;
+  background: var(--panel2);
+  border: 1px solid var(--border);
   color: var(--text);
+  font-size: 13px;
+}
+
+.examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.example {
+  background: #17243a;
+  color: #dbe7ff;
+  border: 1px solid var(--border);
+  padding: 7px 10px;
+  font-size: 12px;
+}
+
+.status {
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.status.error { color: var(--red); }
+.status.success { color: var(--green); }
+
+.result-card { margin-bottom: 30px; }
+
+.result-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
 }
 
 .result {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-  line-height: 1.75;
+  background: #0c1425;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  min-height: 150px;
+  color: #e6edff;
+  font-size: 14px;
+}
+
+.empty {
+  color: #8494af;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  min-height: 120px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.note {
+  border-left: 3px solid var(--cyan);
+  padding: 10px 12px;
+  background: #10252d;
+  color: #c9e9e7;
+  border-radius: 0 8px 8px 0;
+  font-size: 13px;
+  margin-top: 16px;
+}
+
+footer {
+  padding: 20px 0 30px;
+  color: var(--muted);
+  font-size: 12px;
+  border-top: 1px solid var(--border);
 }
 
 .hidden { display: none; }
 
-.features {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
-
-.feature {
-  background: #10182a;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 12px;
-  text-align: center;
-}
-
-.feature div { font-size: 23px; }
-.feature small { color: var(--muted); }
-
-footer {
-  text-align: center;
-  padding: 25px;
-  color: var(--muted);
-  font-size: 13px;
-}
-
-@media(max-width: 480px) {
-  main { margin-top: 25px; }
-  .card { padding: 15px; }
-  .features { grid-template-columns: 1fr; }
+@media (min-width: 760px) {
+  .layout {
+    grid-template-columns: .95fr 1.05fr;
+    align-items: start;
+  }
+  .result-card { position: sticky; top: 12px; }
+  .card { padding: 25px; }
 }
 </style>
 </head>
 
 <body>
-
 <header>
-  <nav>
+  <div class="header-inner">
     <div class="logo">SitePilot <span>IA</span></div>
-    <span class="muted">Assistant de projet</span>
-  </nav>
+    <div class="tagline">Ton assistant pour préparer et concevoir des projets web.</div>
+  </div>
 </header>
 
 <main>
   <section class="hero">
-    <span class="tag">✦ Prépare ton projet avec l'IA</span>
-    <h1>Ton idée mérite<br>un vrai site web.</h1>
-    <p class="muted">
-      Décris ton idée. Nous t'aiderons à clarifier tes besoins
-      et à préparer les étapes de construction de ton site.
+    <div class="badge">✦ Assistant IA pour projets web</div>
+    <h1>Transforme ton idée en <span>plan concret.</span></h1>
+    <p>
+      Décris ton projet. SitePilot IA t'aide à définir les fonctionnalités,
+      l'organisation des pages, les outils à utiliser et les prochaines étapes.
     </p>
   </section>
 
-  <section class="card">
-    <h2>Présente ton projet</h2>
-    <p class="muted">
-      Ces informations permettront à l'agent de mieux comprendre
-      ce que tu veux construire.
-    </p>
+  <section class="layout">
+    <div class="card">
+      <h2>Ton projet</h2>
+      <p class="description">
+        Renseigne les informations principales pour obtenir une analyse personnalisée.
+      </p>
 
-    <form id="projectForm">
-      <label for="nom">Nom du projet</label>
-      <input id="nom" maxlength="80"
-        placeholder="Ex. Ma boutique en ligne" required>
+      <form id="projectForm">
+        <label for="projectName">Nom du projet *</label>
+        <input id="projectName" maxlength="100"
+          placeholder="Ex. : Ma boutique en ligne" required>
 
-      <label for="type">Quel type de site souhaites-tu ?</label>
-      <select id="type">
-        <option value="Site vitrine">Site vitrine</option>
-        <option value="Boutique en ligne">Boutique en ligne</option>
-        <option value="Blog">Blog</option>
-        <option value="Application web">Application web</option>
-        <option value="Plateforme éducative">Plateforme éducative</option>
-        <option value="Autre">Autre projet</option>
-      </select>
+        <label for="projectType">Type de projet *</label>
+        <select id="projectType" required>
+          <option value="Site vitrine">Site vitrine</option>
+          <option value="Commerce en ligne">Commerce en ligne</option>
+          <option value="Blog">Blog</option>
+          <option value="Application web">Application web</option>
+          <option value="Plateforme éducative">Plateforme éducative</option>
+          <option value="Outil d'intelligence artificielle">Outil d'intelligence artificielle</option>
+          <option value="Autre">Autre</option>
+        </select>
 
-      <label for="public">À qui s'adresse le site ?</label>
-      <input id="public" maxlength="150"
-        placeholder="Ex. Clients, élèves, commerçants">
+        <label for="audience">Public cible</label>
+        <input id="audience" maxlength="250"
+          placeholder="Ex. : particuliers et entreprises au Sénégal">
 
-      <label for="fonctions">Fonctionnalités souhaitées</label>
-      <textarea id="fonctions" maxlength="2000"
-        placeholder="Ex. Présenter mes produits, recevoir des commandes, contacter les clients..."></textarea>
+        <label for="features">Fonctionnalités souhaitées *</label>
+        <textarea id="features" maxlength="1500" required
+          placeholder="Ex. : catalogue, inscription, espace client, paiement, commandes WhatsApp..."></textarea>
 
-      <label for="budget">Budget de départ</label>
-      <select id="budget">
-        <option value="Gratuit">Gratuit</option>
-        <option value="Petit budget">Petit budget</option>
-        <option value="Budget flexible">Budget flexible</option>
-      </select>
+        <label for="budget">Budget disponible</label>
+        <select id="budget">
+          <option value="Très faible ou gratuit">Très faible ou gratuit</option>
+          <option value="Petit budget">Petit budget</option>
+          <option value="Budget moyen">Budget moyen</option>
+          <option value="Budget important">Budget important</option>
+          <option value="À déterminer">À déterminer</option>
+        </select>
 
-      <button id="submitButton" type="submit">
-        ✦ Analyser mon projet
-      </button>
-    </form>
-  </section>
+        <label for="level">Ton niveau en programmation</label>
+        <select id="level">
+          <option value="Débutant">Débutant</option>
+          <option value="Intermédiaire">Intermédiaire</option>
+          <option value="Avancé">Avancé</option>
+        </select>
 
-  <section class="features">
-    <div class="feature">
-      <div>🎯</div>
-      <strong>Clarifier</strong><br>
-      <small>Définir les besoins</small>
+        <label for="extra">Informations supplémentaires</label>
+        <textarea id="extra" maxlength="1000"
+          placeholder="Style visuel, délai, outils préférés, contraintes..."></textarea>
+
+        <button class="primary" id="analyzeButton" type="submit">
+          ✦ Analyser mon projet
+        </button>
+
+        <div class="examples">
+          <button class="example" type="button" data-example="shop">Boutique en ligne</button>
+          <button class="example" type="button" data-example="school">Plateforme scolaire</button>
+          <button class="example" type="button" data-example="ai">Agent IA</button>
+        </div>
+
+        <div class="status" id="status" role="status" aria-live="polite">
+          Prêt à analyser ton projet.
+        </div>
+      </form>
     </div>
-    <div class="feature">
-      <div>🧠</div>
-      <strong>Planifier</strong><br>
-      <small>Préparer les étapes</small>
-    </div>
-    <div class="feature">
-      <div>🛠️</div>
-      <strong>Construire</strong><br>
-      <small>Préparer la réalisation</small>
-    </div>
-  </section>
 
-  <section class="card" id="resultCard" style="margin-top:16px">
-    <h2>Analyse de ton projet</h2>
-    <p id="status" class="muted">
-      Ton projet apparaîtra ici après l'analyse.
-    </p>
-    <div id="result" class="result"></div>
-    <button id="copyButton" class="secondary hidden" type="button">
-      Copier le résultat
-    </button>
+    <div class="card result-card">
+      <div class="result-top">
+        <div>
+          <h2>Analyse du projet</h2>
+          <div class="description" style="margin:4px 0 0">
+            Le résultat apparaîtra ici.
+          </div>
+        </div>
+        <span class="badge">SitePilot IA</span>
+      </div>
+
+      <div id="result" class="result" aria-live="polite">
+        <div class="empty">
+          <div>
+            <div style="font-size:32px">✧</div>
+            <strong>Ton espace de travail</strong>
+            <p>Complète le formulaire puis lance l'analyse.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="secondary" id="copyButton" type="button">
+          Copier le résultat
+        </button>
+        <button class="secondary" id="downloadButton" type="button">
+          Télécharger en TXT
+        </button>
+        <button class="secondary" id="clearButton" type="button">
+          Effacer
+        </button>
+      </div>
+
+      <div class="note">
+        L'IA propose un plan et des recommandations. Elle ne crée pas
+        automatiquement le site ni ne réalise de paiement à ta place.
+      </div>
+    </div>
   </section>
 </main>
 
 <footer>
-  SitePilot IA · Un projet à la fois, une étape à la fois.
+  SitePilot IA — Prototype d'assistant de conception web.
+  Ne saisis pas de mots de passe, de clés API ou de données confidentielles.
 </footer>
 
 <script>
-// Adresse du Worker Cloudflare à configurer.
-// Laisser vide tant que le Worker n'est pas déployé.
-const WORKER_URL = "";
+"use strict";
+
+// Adresse de TON Worker Cloudflare.
+const WORKER_URL =
+  "https://sitepilot-ia-agent.papemoussaamar1.workers.dev";
 
 const form = document.getElementById("projectForm");
-const statusText = document.getElementById("status");
-const result = document.getElementById("result");
-const copyButton = document.getElementById("copyButton");
-const submitButton = document.getElementById("submitButton");
+const statusBox = document.getElementById("status");
+const resultBox = document.getElementById("result");
+const analyzeButton = document.getElementById("analyzeButton");
 
-function preparerPrompt(projet) {
+let lastResult = "";
+
+function setStatus(message, type = "") {
+  statusBox.textContent = message;
+  statusBox.className = "status" + (type ? " " + type : "");
+}
+
+function getProject() {
+  return {
+    nom: document.getElementById("projectName").value.trim(),
+    type: document.getElementById("projectType").value,
+    public: document.getElementById("audience").value.trim(),
+    fonctionnalites: document.getElementById("features").value.trim(),
+    budget: document.getElementById("budget").value,
+    niveau: document.getElementById("level").value,
+    informations: document.getElementById("extra").value.trim()
+  };
+}
+
+function buildPrompt(p) {
   return `
-Tu es SitePilot IA, un assistant spécialisé dans la préparation
-de projets de sites web.
+Tu es SitePilot IA, un expert en conception de sites web et d'applications.
+Réponds en français, avec des explications simples et des étapes concrètes.
+Adapte tes recommandations au niveau et au budget de l'utilisateur.
+N'invente pas de prix précis ni de services prétendument vérifiés.
+Si une information manque, indique les hypothèses.
 
-Analyse le projet ci-dessous et réponds en français simple.
+PROJET
+Nom : ${p.nom}
+Type : ${p.type}
+Public cible : ${p.public || "À préciser"}
+Fonctionnalités : ${p.fonctionnalites}
+Budget : ${p.budget}
+Niveau en programmation : ${p.niveau}
+Informations supplémentaires : ${p.informations || "Aucune"}
 
-Nom : ${projet.nom}
-Type : ${projet.type}
-Public : ${projet.public || "Non précisé"}
-Fonctionnalités : ${projet.fonctions || "À définir"}
-Budget : ${projet.budget}
+Prépare une analyse structurée comprenant :
+1. Résumé de l'idée et objectif principal.
+2. Public cible et besoins à résoudre.
+3. Liste des fonctionnalités indispensables, puis secondaires.
+4. Pages nécessaires et contenu de chaque page.
+5. Proposition de design et navigation.
+6. Technologies recommandées, en privilégiant les options simples
+   et peu coûteuses si le budget est limité.
+7. Plan de réalisation par étapes, dans l'ordre.
+8. Structure de fichiers recommandée.
+9. Vérifications et tests à effectuer avant publication.
+10. Risques, sécurité, confidentialité et coûts à prévoir.
+11. Trois premières actions que l'utilisateur peut effectuer aujourd'hui.
 
-Présente ta réponse avec ces rubriques :
-1. Résumé du projet
-2. Objectif principal
-3. Pages nécessaires
-4. Fonctionnalités à développer
-5. Technologies recommandées
-6. Plan de réalisation en étapes
-7. Coûts potentiels et options gratuites
-8. Points à vérifier avant le lancement
-
-N'affirme pas qu'une fonctionnalité est déjà construite.
-Distingue clairement les recommandations des actions réalisées.
-Ne demande pas de données confidentielles.
+Sois concret, pédagogique et réaliste. Ne prétends pas avoir créé,
+publié ou testé le site si tu ne l'as pas réellement fait.
 `;
 }
 
-function analyserLocal(projet) {
-  const pages = {
-    "Site vitrine": ["Accueil", "À propos", "Services", "Contact"],
-    "Boutique en ligne": ["Accueil", "Catalogue", "Produit", "Panier", "Contact"],
-    "Blog": ["Accueil", "Articles", "Article détaillé", "À propos"],
-    "Application web": ["Accueil", "Tableau de bord", "Paramètres"],
-    "Plateforme éducative": ["Accueil", "Cours", "Leçons", "Progression"],
-    "Autre": ["Accueil", "Présentation", "Fonctionnalités", "Contact"]
-  };
-
-  return `PROJET : ${projet.nom}
-
-1. OBJECTIF
-Créer un projet de type : ${projet.type}.
-
-2. PUBLIC CIBLE
-${projet.public || "À préciser avec le porteur du projet."}
-
-3. PAGES À PRÉVOIR
-${pages[projet.type].map((p, i) => `${i + 1}. ${p}`).join("\n")}
-
-4. FONCTIONNALITÉS
-${projet.fonctions || "Lister les fonctionnalités prioritaires avant de développer."}
-
-5. PLAN DE RÉALISATION
-1. Confirmer les besoins et les utilisateurs.
-2. Dessiner les pages principales.
-3. Construire l'interface HTML et CSS.
-4. Ajouter les fonctionnalités JavaScript.
-5. Tester sur téléphone.
-6. Préparer l'hébergement et la sécurité.
-
-6. BUDGET
-Budget annoncé : ${projet.budget}.
-Des services gratuits peuvent convenir pour un prototype.
-Un domaine, un hébergement ou des services API peuvent coûter de l'argent.
-
-MODE LOCAL : cette analyse est un modèle de départ généré
-par JavaScript, pas une réponse d'un modèle de langage IA.`;
+function showResult(text) {
+  lastResult = text;
+  resultBox.textContent = text;
 }
 
-form.addEventListener("submit", async event => {
+function localFallback(p) {
+  return `PLAN INITIAL — ${p.nom}
+
+1. OBJECTIF
+Construire un projet de type ${p.type}, destiné à :
+${p.public || "un public à définir"}.
+
+2. FONCTIONNALITÉS
+Priorité donnée à :
+${p.fonctionnalites}
+
+3. BUDGET ET NIVEAU
+Budget : ${p.budget}
+Niveau : ${p.niveau}
+
+4. PLAN DE DÉPART
+- Étape 1 : préciser les besoins et les utilisateurs.
+- Étape 2 : dessiner les pages principales.
+- Étape 3 : préparer le HTML pour la structure.
+- Étape 4 : utiliser le CSS pour le design responsive.
+- Étape 5 : utiliser JavaScript pour les interactions.
+- Étape 6 : tester sur téléphone et ordinateur.
+- Étape 7 : choisir un hébergement adapté et publier.
+- Étape 8 : vérifier la sécurité et les formulaires.
+
+5. PROCHAINE ACTION
+Décris précisément chaque fonctionnalité et décide laquelle est
+la plus importante pour la première version.
+
+Note : ce résultat est un plan de secours local. Pour une analyse
+générée par Gemini, vérifie la connexion au Worker Cloudflare.`;
+}
+
+form.addEventListener("submit", async function(event) {
   event.preventDefault();
 
-  const projet = {
-    nom: document.getElementById("nom").value.trim(),
-    type: document.getElementById("type").value,
-    public: document.getElementById("public").value.trim(),
-    fonctions: document.getElementById("fonctions").value.trim(),
-    budget: document.getElementById("budget").value
-  };
+  const p = getProject();
 
-  if (!projet.nom) return;
+  if (!p.nom || !p.fonctionnalites) {
+    setStatus("Remplis le nom du projet et les fonctionnalités.", "error");
+    return;
+  }
 
-  submitButton.disabled = true;
-  statusText.textContent = "Analyse en cours...";
-  result.textContent = "";
-  copyButton.classList.add("hidden");
+  analyzeButton.disabled = true;
+  analyzeButton.textContent = "Analyse en cours...";
+  setStatus("Connexion à SitePilot IA et demande d'analyse...");
 
   try {
-    let texte;
+    const response = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ mission: buildPrompt(p) })
+    });
 
-    if (WORKER_URL) {
-      const response = await fetch(WORKER_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          mission: preparerPrompt(projet)
-        })
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.erreur || "Erreur du service IA");
-      }
-
-      texte = data.reponse;
-      statusText.textContent = "Analyse réalisée par le LLM.";
-    } else {
-      texte = analyserLocal(projet);
-      statusText.textContent =
-        "Mode démonstration : connecte le Worker pour utiliser un LLM.";
+    let data;
+    try {
+      data = await response.json();
+    } catch {
+      throw new Error("Réponse illisible du Worker. Vérifie son code.");
     }
 
-    result.textContent = texte;
-    copyButton.classList.remove("hidden");
+    if (!response.ok) {
+      throw new Error(data.erreur || "Le service IA a refusé la requête.");
+    }
+
+    if (!data.reponse) {
+      throw new Error("Aucun texte reçu. Vérifie la connexion à Gemini.");
+    }
+
+    showResult(data.reponse);
+    setStatus("Analyse reçue du service IA.", "success");
 
   } catch (error) {
-    statusText.textContent = "Impossible de terminer l'analyse.";
-    result.textContent = error.message;
+    console.error("SitePilot IA :", error);
+
+    showResult(
+      "La connexion à Gemini n'a pas abouti.\n\n" +
+      "Détail : " + (error.message || "Erreur de connexion") +
+      "\n\nVérifie que le Worker est déployé, que le secret " +
+      "GEMINI_API_KEY est configuré et que le navigateur autorise " +
+      "la connexion. Si le site est publié, vérifie aussi les règles CORS."
+    );
+
+    setStatus("Échec de la connexion au service IA.", "error");
   } finally {
-    submitButton.disabled = false;
+    analyzeButton.disabled = false;
+    analyzeButton.textContent = "✦ Analyser mon projet";
   }
 });
 
-copyButton.addEventListener("click", async () => {
-  try {
-    await navigator.clipboard.writeText(result.textContent);
-    copyButton.textContent = "Copié !";
-  } catch {
-    copyButton.textContent = "Copie indisponible dans ce navigateur";
+document.querySelectorAll("[data-example]").forEach(button => {
+  button.addEventListener("click", () => {
+    const type = button.dataset.example;
+
+    if (type === "shop") {
+      document.getElementById("projectName").value = "Boutique Sénégal";
+      document.getElementById("projectType").value = "Commerce en ligne";
+      document.getElementById("audience").value = "Clients au Sénégal";
+      document.getElementById("features").value =
+        "Catalogue produits, recherche, panier, commande WhatsApp, " +
+        "gestion des produits et interface adaptée aux téléphones.";
+      document.getElementById("budget").value = "Très faible ou gratuit";
+    }
+
+    if (type === "school") {
+      document.getElementById("projectName").value = "École numérique";
+      document.getElementById("projectType").value = "Plateforme éducative";
+      document.getElementById("audience").value = "Élèves et enseignants";
+      document.getElementById("features").value =
+        "Cours, exercices, ressources pédagogiques, suivi des progrès " +
+        "et espace enseignant.";
+    }
+
+    if (type === "ai") {
+      document.getElementById("projectName").value = "Mon agent IA";
+      document.getElementById("projectType").value =
+        "Outil d'intelligence artificielle";
+      document.getElementById("audience").value = "Étudiants et entrepreneurs";
+      document.getElementById("features").value =
+        "Zone de discussion, réponses générées par un LLM, historique " +
+        "des échanges et interface mobile.";
+    }
+
+    setStatus("Exemple chargé. Tu peux modifier les informations.");
+  });
+});
+
+document.getElementById("copyButton").addEventListener("click", async () => {
+  if (!lastResult) {
+    setStatus("Aucun résultat à copier.", "error");
+    return;
   }
+
+  try {
+    await navigator.clipboard.writeText(lastResult);
+    setStatus("Résultat copié.", "success");
+  } catch {
+    const area = document.createElement("textarea");
+    area.value = lastResult;
+    document.body.appendChild(area);
+    area.select();
+
+    try {
+      const ok = document.execCommand("copy");
+      setStatus(ok ? "Résultat copié." : "Sélectionne et copie le texte.");
+    } catch {
+      setStatus("Sélectionne le résultat pour le copier.");
+    }
+
+    area.remove();
+  }
+});
+
+document.getElementById("downloadButton").addEventListener("click", () => {
+  if (!lastResult) {
+    setStatus("Aucun résultat à télécharger.", "error");
+    return;
+  }
+
+  const blob = new Blob([lastResult], {
+    type: "text/plain;charset=utf-8"
+  });
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "analyse-sitepilot-ia.txt";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+  setStatus("Téléchargement préparé.", "success");
+});
+
+document.getElementById("clearButton").addEventListener("click", () => {
+  lastResult = "";
+  resultBox.textContent = "Ton résultat apparaîtra ici.";
+  setStatus("Résultat effacé.");
 });
 </script>
-
 </body>
 </html>
