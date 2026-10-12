@@ -1,61 +1,62 @@
-// api/generate.js — Fonction serverless Vercel avec l'API Interactions de Gemini
+// api/generate.js — Agent IA léger avec Groq (gratuit, ultra-rapide)
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Méthode non autorisée' });
     }
 
     const { prompt } = req.body || {};
-    if (!prompt || typeof prompt !== 'string' || prompt.trim().length === 0) {
+    if (!prompt || typeof prompt !== 'string' || !prompt.trim()) {
         return res.status(400).json({ error: 'Le champ "prompt" est requis.' });
     }
 
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = process.env.GROQ_API_KEY;
     if (!apiKey) {
-        return res.status(500).json({ error: 'Clé API Gemini non configurée sur le serveur.' });
+        return res.status(500).json({ error: 'Clé API Groq non configurée.' });
     }
 
-    // ⚠️ Nouveau modèle : gemini-3.8-flash (remplace gemini-2.0-flash)
-    const MODEL = 'gemini-3.8-flash';
-    const endpoint = 'https://generativelanguage.googleapis.com/v1beta/interactions';
+    // 🪶 Prompt système RACCOURCI (économise ~50% de tokens d'entrée)
+    const systemPrompt = `Génère UNIQUEMENT un fichier HTML complet avec CSS inline moderne et responsive. Aucun texte explicatif, aucune balise markdown. Commence par <!DOCTYPE html>.`;
 
-    const systemPrompt = `Tu es un développeur web expert. Génère uniquement le code HTML et CSS complet, dans un seul fichier autonome, en te basant sur la demande de l'utilisateur. Utilise un design moderne, responsive et professionnel. Ne fournis AUCUN texte explicatif ni balise markdown, seulement le code HTML brut commençant par <!DOCTYPE html>.`;
+    // ✂️ Tronquer le prompt utilisateur pour éviter les abus
+    const userPrompt = prompt.slice(0, 800);
 
     try {
-        const response = await fetch(endpoint, {
+        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                // ⚠️ La clé passe par l'en-tête x-goog-api-key
-                'x-goog-api-key': apiKey
+                'Authorization': `Bearer ${apiKey}`
             },
             body: JSON.stringify({
-                // ✅ Nouveau format : model + input + system_instruction
-                model: MODEL,
-                system_instruction: systemPrompt,
-                input: prompt
-                // Optionnel : contrôler le niveau de réflexion
-                // generation_config: { thinking_level: 'low' }
+                // 🪶 Modèle léger et rapide (gratuit)
+                model: 'llama-3.1-8b-instant',
+                messages: [
+                    { role: 'system', content: systemPrompt },
+                    { role: 'user', content: userPrompt }
+                ],
+                // 🪶 Sortie plafonnée pour limiter la consommation
+                max_tokens: 4000,
+                temperature: 0.7
             })
         });
 
         const data = await response.json();
 
         if (!response.ok) {
-            const message = data.error?.message || `Erreur Gemini (${response.status})`;
+            const message = data.error?.message || `Erreur Groq (${response.status})`;
             return res.status(response.status).json({ error: message });
         }
 
-        // ✅ Nouveau chemin d'accès à la réponse : output_text
-        let html = data.output_text || '';
+        let html = data.choices?.[0]?.message?.content || '';
 
-        // Nettoyage des balises markdown éventuelles
+        // Nettoyage
         html = html.replace(/```html\s*/gi, '').replace(/```\s*/g, '').trim();
 
         if (!html) {
-            return res.status(500).json({ error: 'Réponse vide de Gemini.' });
+            return res.status(500).json({ error: 'Réponse vide.' });
         }
 
-        // Sécurité : enveloppe si l'IA a renvoyé un fragment
+        // Enveloppe si fragment
         if (!html.toLowerCase().startsWith('<!doctype') && !html.toLowerCase().startsWith('<html')) {
             html = `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Site généré</title></head><body>${html}</body></html>`;
         }
@@ -63,7 +64,7 @@ export default async function handler(req, res) {
         return res.status(200).json({ html });
 
     } catch (error) {
-        console.error('Erreur serveur :', error);
-        return res.status(500).json({ error: error.message || 'Erreur interne du serveur.' });
+        console.error('Erreur :', error);
+        return res.status(500).json({ error: error.message || 'Erreur serveur.' });
     }
 }
