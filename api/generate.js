@@ -1,12 +1,12 @@
-// api/generate.js — Version corrigée avec un modèle Groq actuel
+// api/generate.js — Agent améliorateur de prompts (Groq, ultra-léger)
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Méthode non autorisée' });
     }
 
-    const { prompt } = req.body || {};
-    if (!prompt || typeof prompt !== 'string' || !prompt.trim()) {
-        return res.status(400).json({ error: 'Le champ "prompt" est requis.' });
+    const { idea, type } = req.body || {};
+    if (!idea || typeof idea !== 'string' || !idea.trim()) {
+        return res.status(400).json({ error: 'Décris ton idée.' });
     }
 
     const apiKey = process.env.GROQ_API_KEY;
@@ -14,8 +14,13 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: 'Clé API Groq non configurée.' });
     }
 
-    const systemPrompt = `Génère UNIQUEMENT un fichier HTML complet avec CSS inline moderne et responsive. Aucun texte explicatif, aucune balise markdown. Commence par <!DOCTYPE html>.`;
-    const userPrompt = prompt.slice(0, 800);
+    // Prompt système court = peu de tokens, résultat net
+    const systemPrompt = `Tu es un expert en prompt engineering. Tu transformes une idée vague en un prompt clair, précis et structuré, prêt à être utilisé avec une IA. Réponds UNIQUEMENT avec le prompt final, sans introduction ni explication.`;
+
+    const userPrompt = `Type de prompt : ${type || 'Texte'}
+Idée de l'utilisateur : ${idea.slice(0, 500)}
+
+Écris un prompt optimisé pour ce type d'IA. Sois concis (max 200 mots).`;
 
     try {
         const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -25,13 +30,13 @@ export default async function handler(req, res) {
                 'Authorization': `Bearer ${apiKey}`
             },
             body: JSON.stringify({
-                // ✅ Modèle actuel : remplacez par 'openai/gpt-oss-120b' ou 'gemma2-9b-it' si besoin
-                model: 'openai/gpt-oss-20b', 
+                model: 'openai/gpt-oss-20b',
                 messages: [
                     { role: 'system', content: systemPrompt },
                     { role: 'user', content: userPrompt }
                 ],
-                max_tokens: 4000,
+                // Prompt court = sortie courte, 500 tokens suffisent largement
+                max_tokens: 500,
                 temperature: 0.7
             })
         });
@@ -43,18 +48,13 @@ export default async function handler(req, res) {
             return res.status(response.status).json({ error: message });
         }
 
-        let html = data.choices?.[0]?.message?.content || '';
-        html = html.replace(/```html\s*/gi, '').replace(/```\s*/g, '').trim();
+        const prompt = (data.choices?.[0]?.message?.content || '').trim();
 
-        if (!html) {
+        if (!prompt) {
             return res.status(500).json({ error: 'Réponse vide.' });
         }
 
-        if (!html.toLowerCase().startsWith('<!doctype') && !html.toLowerCase().startsWith('<html')) {
-            html = `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Site généré</title></head><body>${html}</body></html>`;
-        }
-
-        return res.status(200).json({ html });
+        return res.status(200).json({ prompt });
 
     } catch (error) {
         console.error('Erreur :', error);
