@@ -1,4 +1,4 @@
-// api/generate.js — Agent IA léger avec Groq (gratuit, ultra-rapide)
+// api/generate.js — Version corrigée avec un modèle Groq actuel
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Méthode non autorisée' });
@@ -14,10 +14,7 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: 'Clé API Groq non configurée.' });
     }
 
-    // 🪶 Prompt système RACCOURCI (économise ~50% de tokens d'entrée)
     const systemPrompt = `Génère UNIQUEMENT un fichier HTML complet avec CSS inline moderne et responsive. Aucun texte explicatif, aucune balise markdown. Commence par <!DOCTYPE html>.`;
-
-    // ✂️ Tronquer le prompt utilisateur pour éviter les abus
     const userPrompt = prompt.slice(0, 800);
 
     try {
@@ -28,13 +25,12 @@ export default async function handler(req, res) {
                 'Authorization': `Bearer ${apiKey}`
             },
             body: JSON.stringify({
-                // 🪶 Modèle léger et rapide (gratuit)
-                model: 'llama-3.1-8b-instant',
+                // ✅ Modèle actuel : remplacez par 'openai/gpt-oss-120b' ou 'gemma2-9b-it' si besoin
+                model: 'openai/gpt-oss-20b', 
                 messages: [
                     { role: 'system', content: systemPrompt },
                     { role: 'user', content: userPrompt }
                 ],
-                // 🪶 Sortie plafonnée pour limiter la consommation
                 max_tokens: 4000,
                 temperature: 0.7
             })
@@ -48,15 +44,12 @@ export default async function handler(req, res) {
         }
 
         let html = data.choices?.[0]?.message?.content || '';
-
-        // Nettoyage
         html = html.replace(/```html\s*/gi, '').replace(/```\s*/g, '').trim();
 
         if (!html) {
             return res.status(500).json({ error: 'Réponse vide.' });
         }
 
-        // Enveloppe si fragment
         if (!html.toLowerCase().startsWith('<!doctype') && !html.toLowerCase().startsWith('<html')) {
             html = `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Site généré</title></head><body>${html}</body></html>`;
         }
