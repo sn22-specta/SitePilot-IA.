@@ -1,4 +1,4 @@
-// api/generate.js — Fonction serverless Vercel avec Google Gemini
+// api/generate.js — Fonction serverless Vercel avec l'API Interactions de Gemini
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Méthode non autorisée' });
@@ -14,30 +14,27 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: 'Clé API Gemini non configurée sur le serveur.' });
     }
 
-    // Modèle : gemini-2.0-flash (gratuit, rapide) ou gemini-2.5-flash (plus récent)
-    const MODEL = 'gemini-2.0-flash';
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${apiKey}`;
+    // ⚠️ Nouveau modèle : gemini-3.8-flash (remplace gemini-2.0-flash)
+    const MODEL = 'gemini-3.8-flash';
+    const endpoint = 'https://generativelanguage.googleapis.com/v1beta/interactions';
 
     const systemPrompt = `Tu es un développeur web expert. Génère uniquement le code HTML et CSS complet, dans un seul fichier autonome, en te basant sur la demande de l'utilisateur. Utilise un design moderne, responsive et professionnel. Ne fournis AUCUN texte explicatif ni balise markdown, seulement le code HTML brut commençant par <!DOCTYPE html>.`;
 
     try {
         const response = await fetch(endpoint, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                // ⚠️ La clé passe par l'en-tête x-goog-api-key
+                'x-goog-api-key': apiKey
+            },
             body: JSON.stringify({
-                systemInstruction: {
-                    parts: [{ text: systemPrompt }]
-                },
-                contents: [
-                    {
-                        role: 'user',
-                        parts: [{ text: prompt }]
-                    }
-                ],
-                generationConfig: {
-                    temperature: 0.8,
-                    maxOutputTokens: 8192
-                }
+                // ✅ Nouveau format : model + input + system_instruction
+                model: MODEL,
+                system_instruction: systemPrompt,
+                input: prompt
+                // Optionnel : contrôler le niveau de réflexion
+                // generation_config: { thinking_level: 'low' }
             })
         });
 
@@ -48,10 +45,8 @@ export default async function handler(req, res) {
             return res.status(response.status).json({ error: message });
         }
 
-        // Extraction du texte généré
-        let html = data.candidates?.[0]?.content?.parts
-            ?.map(p => p.text || '')
-            .join('') || '';
+        // ✅ Nouveau chemin d'accès à la réponse : output_text
+        let html = data.output_text || '';
 
         // Nettoyage des balises markdown éventuelles
         html = html.replace(/```html\s*/gi, '').replace(/```\s*/g, '').trim();
