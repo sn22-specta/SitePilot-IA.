@@ -4,181 +4,392 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#101827">
-<title>SitePilot IA</title>
+<meta name="theme-color" content="#0b1020">
+<title>SitePilot IA — Créateur de sites</title>
+
 <style>
 :root {
   color-scheme: dark;
-  --bg: #0b1120;
-  --panel: #121c30;
-  --border: #2a3852;
-  --text: #f4f7ff;
-  --muted: #a7b4cc;
-  --blue: #5685ff;
-  --cyan: #55d6d0;
+  --bg: #0b1020;
+  --panel: #121a2d;
+  --border: #293650;
+  --text: #f5f7ff;
+  --muted: #a4b1ca;
+  --blue: #6585ff;
+  --cyan: #56dfd0;
 }
 * { box-sizing: border-box; }
+
 body {
-  margin: 0; padding: 20px;
-  background: var(--bg); color: var(--text);
-  font: 16px/1.6 system-ui, sans-serif;
+  margin: 0;
+  background:
+    radial-gradient(ellipse at top, #172447 0, var(--bg) 60%);
+  color: var(--text);
+  font: 15px/1.6 system-ui, sans-serif;
 }
-main { max-width: 950px; margin: auto; }
-h1 span { color: var(--cyan); }
-.card {
-  background: var(--panel); border: 1px solid var(--border);
-  border-radius: 16px; padding: 20px; margin: 18px 0;
-}
-label { display: block; margin: 14px 0 6px; }
-input, select, textarea, button {
-  width: 100%; padding: 12px; border-radius: 9px;
-  border: 1px solid var(--border); font: inherit;
-}
-input, select, textarea {
-  background: var(--bg); color: var(--text);
-}
-textarea { min-height: 110px; resize: vertical; }
+
+button, textarea { font: inherit; }
+
 button {
-  margin-top: 16px; background: var(--blue);
-  color: white; border: 0; font-weight: 700;
+  border: 0;
+  border-radius: 11px;
+  padding: 12px 17px;
   cursor: pointer;
+  font-weight: 700;
+  transition: opacity .2s, transform .2s;
 }
-button:disabled { opacity: .6; }
-#status { color: var(--muted); overflow-wrap: anywhere; }
+button:hover { transform: translateY(-1px); }
+button:disabled { opacity: .55; cursor: wait; }
+
+main {
+  width: min(100% - 28px, 1000px);
+  margin: auto;
+  padding: 30px 0 50px;
+}
+
+header { text-align: center; padding: 20px 0 28px; }
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 27px;
+  font-weight: 850;
+  letter-spacing: -1px;
+}
+.logo-mark {
+  display: grid;
+  place-items: center;
+  width: 39px;
+  height: 39px;
+  border-radius: 12px;
+  color: #071020;
+  background: linear-gradient(135deg, var(--cyan), var(--blue));
+}
+.logo span { color: var(--cyan); }
+
+header p {
+  color: var(--muted);
+  max-width: 520px;
+  margin: 12px auto 0;
+}
+
+.card {
+  background: rgba(18, 26, 45, .94);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 21px;
+  margin-bottom: 19px;
+  box-shadow: 0 12px 40px #00000012;
+}
+
+h2 { margin: 0 0 8px; font-size: 19px; }
+.muted { color: var(--muted); }
+.small { font-size: 12px; }
+
+textarea {
+  display: block;
+  width: 100%;
+  min-height: 135px;
+  resize: vertical;
+  background: #0b1120;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 15px;
+  outline: none;
+}
+textarea:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px #6585ff22;
+}
+textarea::placeholder { color: #7f8ca6; }
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 13px;
+}
+.actions button { flex: 1; }
+
+.primary {
+  background: linear-gradient(110deg, #6585ff, #4d69e9);
+  color: white;
+}
+.secondary {
+  background: #202d47;
+  color: white;
+  border: 1px solid var(--border);
+}
+.accent {
+  background: #173c3d;
+  color: #8ff6e8;
+  border: 1px solid #27605e;
+}
+
+#status {
+  color: var(--muted);
+  overflow-wrap: anywhere;
+  font-size: 13px;
+  margin: 14px 0 0;
+}
+#status.error { color: #ff9eaa; }
+#status.success { color: var(--cyan); }
+
+.preview-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 13px;
+}
+.preview-head h2 { margin: 0; }
+
+.badge {
+  display: inline-block;
+  padding: 4px 9px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
 iframe {
-  width: 100%; height: 480px; background: white;
-  border: 1px solid var(--border); border-radius: 10px;
+  display: block;
+  width: 100%;
+  height: 520px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
 }
-pre, #output {
-  white-space: pre-wrap; overflow-wrap: anywhere;
+
+details { margin-top: 15px; }
+summary {
+  color: var(--muted);
+  cursor: pointer;
+  padding: 8px 0;
 }
-#output {
-  min-height: 160px; padding: 14px;
-  background: var(--bg); border-radius: 10px;
+pre {
+  max-height: 350px;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  background: #080d18;
+  border: 1px solid var(--border);
+  padding: 13px;
+  border-radius: 10px;
+  font-size: 12px;
+}
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+  padding: 10px 0;
+}
+
+@media (max-width: 560px) {
+  main { width: min(100% - 20px, 1000px); padding-top: 15px; }
+  .card { padding: 15px; border-radius: 14px; }
+  header { padding-top: 12px; }
+  .logo { font-size: 24px; }
+  iframe { height: 420px; }
+  .actions button { min-width: 100%; }
 }
 </style>
 </head>
+
 <body>
 <main>
-  <h1>SitePilot <span>IA</span></h1>
-  <p>Décris ton projet. Gemini t'aidera à concevoir ton site web.</p>
 
-  <section class="card">
-    <form id="form">
-      <label for="name">Nom du projet</label>
-      <input id="name" required maxlength="100"
-        placeholder="Ex. : Boutique Sénégal">
+<header>
+  <div class="logo">
+    <div class="logo-mark">S</div>
+    <div>SitePilot <span>IA</span></div>
+  </div>
+  <p>
+    Décris ton idée. Ton assistant IA crée ton site,
+    affiche le résultat et t'aide à l'améliorer.
+  </p>
+</header>
 
-      <label for="type">Type de projet</label>
-      <select id="type">
-        <option>Site vitrine</option>
-        <option>Commerce en ligne</option>
-        <option>Blog</option>
-        <option>Application web</option>
-        <option>Plateforme éducative</option>
-        <option>Agent IA</option>
-      </select>
+<section class="card">
+  <h2>Que veux-tu créer ?</h2>
+  <p class="muted small">
+    Explique ton idée simplement. Tu peux aussi demander
+    une modification après la première génération.
+  </p>
 
-      <label for="description">Décris le site que tu veux créer</label>
-      <textarea id="description" required maxlength="5000"
-        placeholder="Pages, couleurs, fonctionnalités, public cible..."></textarea>
+  <form id="form">
+    <textarea
+      id="mission"
+      required
+      maxlength="12000"
+      placeholder="Ex. : Crée une boutique en ligne moderne pour vendre des vêtements au Sénégal. Ajoute des produits, des prix, un panier interactif et un design adapté aux téléphones."
+    ></textarea>
 
-      <label for="mode">Action</label>
-      <select id="mode">
-        <option value="generate">Générer un site HTML</option>
-        <option value="plan">Analyser et planifier</option>
-        <option value="revise">Améliorer un code HTML</option>
-      </select>
+    <div class="actions">
+      <button class="primary" id="generate" type="submit">
+        Créer mon site
+      </button>
+      <button class="secondary" id="reset" type="button">
+        Nouveau projet
+      </button>
+    </div>
+  </form>
 
-      <label for="existing">Code HTML existant (facultatif)</label>
-      <textarea id="existing" maxlength="25000"
-        placeholder="Colle le code à améliorer ici."></textarea>
+  <p id="status" role="status" aria-live="polite">
+    Prêt à créer ton projet.
+  </p>
+</section>
 
-      <button id="submit" type="submit">Créer avec Gemini</button>
-      <p id="status" role="status" aria-live="polite">Prêt.</p>
-    </form>
-  </section>
+<section class="card">
+  <div class="preview-head">
+    <h2>Aperçu de ton site</h2>
+    <span class="badge" id="previewState">En attente</span>
+  </div>
 
-  <section class="card">
-    <h2>Résultat de Gemini</h2>
-    <pre id="output">Ton résultat apparaîtra ici.</pre>
-    <button id="download" type="button">Télécharger index.html</button>
-  </section>
+  <iframe
+    id="preview"
+    title="Aperçu du site généré"
+    sandbox=""
+    referrerpolicy="no-referrer"
+    srcdoc="<!doctype html><html lang='fr'><body style='font-family:system-ui;padding:30px;color:#24304a'><h1>Bienvenue sur SitePilot IA</h1><p>Ton site apparaîtra ici après sa création.</p></body></html>"
+  ></iframe>
 
-  <section class="card">
-    <h2>Aperçu du site</h2>
-    <iframe id="preview" title="Aperçu du site généré"
-      sandbox=""
-      referrerpolicy="no-referrer"
-      srcdoc="<!doctype html><html lang='fr'><body style='font-family:system-ui;padding:24px'><h2>Bienvenue sur SitePilot</h2><p>Ton site apparaîtra ici.</p></body></html>"></iframe>
-  </section>
+  <div class="actions">
+    <button class="primary" id="download" type="button">
+      Télécharger mon site HTML
+    </button>
+    <button class="accent" id="copyPrompt" type="button">
+      Copier ma demande
+    </button>
+  </div>
+
+  <details>
+    <summary>Afficher le code HTML généré</summary>
+    <pre id="code">Aucun code généré pour le moment.</pre>
+    <button class="secondary" id="copyCode" type="button">
+      Copier le code HTML
+    </button>
+  </details>
+</section>
+
+<footer>
+  SitePilot IA · Création assistée par intelligence artificielle
+</footer>
+
 </main>
 
 <script>
 "use strict";
 
-// API hébergée sur Vercel : aucune URL Cloudflare.
 const API_URL = "/api/generate";
 
 const form = document.getElementById("form");
-const button = document.getElementById("submit");
+const missionInput = document.getElementById("mission");
+const generateButton = document.getElementById("generate");
+const resetButton = document.getElementById("reset");
+const downloadButton = document.getElementById("download");
+const copyPromptButton = document.getElementById("copyPrompt");
+const copyCodeButton = document.getElementById("copyCode");
 const statusBox = document.getElementById("status");
-const output = document.getElementById("output");
 const preview = document.getElementById("preview");
+const previewState = document.getElementById("previewState");
+const codeBox = document.getElementById("code");
 
 let generatedHtml = "";
+let isBusy = false;
 
-function cleanHtml(text) {
-  let html = text.trim()
+function setStatus(message, type = "") {
+  statusBox.textContent = message;
+  statusBox.className = type;
+}
+
+function extractHtml(text) {
+  let html = text.trim();
+
+  html = html
     .replace(/^```(?:html)?\s*/i, "")
     .replace(/\s*```$/, "")
     .trim();
 
   const start = html.toLowerCase().indexOf("<!doctype html");
-  if (start >= 0) html = html.slice(start);
+
+  if (start >= 0) {
+    html = html.slice(start);
+  }
 
   return html;
 }
 
-form.addEventListener("submit", async (event) => {
+function isCompleteHtml(html) {
+  return /<html[\s>]/i.test(html) &&
+         /<body[\s>]/i.test(html);
+}
+
+async function generateSite(event) {
   event.preventDefault();
 
-  const name = document.getElementById("name").value.trim();
-  const type = document.getElementById("type").value;
-  const description =
-    document.getElementById("description").value.trim();
-  const mode = document.getElementById("mode").value;
-  const existing =
-    document.getElementById("existing").value.trim();
+  if (isBusy) return;
 
-  if (!name || !description) {
-    statusBox.textContent = "Complète les champs obligatoires.";
+  const request = missionInput.value.trim();
+
+  if (!request) {
+    setStatus("Décris d'abord le site que tu veux créer.", "error");
+    missionInput.focus();
     return;
   }
 
-  if (mode === "revise" && !existing) {
-    statusBox.textContent = "Colle le HTML à améliorer.";
+  if (request.length > 12000) {
+    setStatus("Ta demande est trop longue.", "error");
     return;
   }
 
-  const mission = [
-    "Tu es SitePilot IA, expert en création web.",
-    "Réponds en français.",
-    "Nom : " + name,
-    "Type : " + type,
-    "Description : " + description,
-    mode === "plan"
-      ? "Fournis un plan concret, les pages, les fonctions, les technologies, les étapes et les tests."
-      : mode === "revise"
-        ? "Améliore le HTML fourni. Retourne le document HTML complet uniquement, sans Markdown.\nHTML :\n" + existing
-        : "Génère un document HTML complet, responsive, avec CSS et JavaScript intégrés. Retourne uniquement le HTML, sans Markdown. N'inclus aucun secret et n'invente pas de backend fonctionnel."
-  ].join("\n\n");
+  const isRevision = Boolean(generatedHtml);
 
-  button.disabled = true;
-  button.textContent = "Génération en cours...";
-  statusBox.textContent = "Connexion à Gemini...";
-  output.textContent = "";
-  generatedHtml = "";
+  const mission = isRevision
+    ? [
+        "L'utilisateur demande une modification de son site existant.",
+        "Voici sa nouvelle demande :",
+        request,
+        "",
+        "Voici le HTML complet actuel :",
+        generatedHtml,
+        "",
+        "Applique les changements demandés.",
+        "Conserve les fonctions utiles existantes.",
+        "Retourne le document HTML complet avec CSS et JavaScript intégrés.",
+        "Retourne uniquement le HTML, sans Markdown."
+      ].join("\n")
+    : [
+        "Crée un site web complet à partir de cette demande :",
+        request,
+        "",
+        "Fournis un document HTML complet avec CSS et JavaScript intégrés.",
+        "Le site doit être responsive, accessible et visuellement soigné.",
+        "Les interactions doivent fonctionner côté navigateur.",
+        "N'invente pas de connexion à un serveur, de paiement réel ou de compte utilisateur fonctionnel.",
+        "Retourne uniquement le document HTML complet, sans Markdown."
+      ].join("\n");
+
+  const mode = isRevision ? "revise" : "generate";
+
+  isBusy = true;
+  generateButton.disabled = true;
+  resetButton.disabled = true;
+  generateButton.textContent = isRevision
+    ? "Modification en cours..."
+    : "Création en cours...";
+
+  previewState.textContent = "Génération...";
+  setStatus(
+    isRevision
+      ? "L'IA prépare les modifications. Cela peut prendre un moment..."
+      : "L'IA crée ton site. Cela peut prendre un moment..."
+  );
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 85000);
@@ -186,7 +397,9 @@ form.addEventListener("submit", async (event) => {
   try {
     const response = await fetch(API_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify({ mission, mode }),
       signal: controller.signal
     });
@@ -194,60 +407,134 @@ form.addEventListener("submit", async (event) => {
     const data = await response.json().catch(() => ({}));
 
     if (!response.ok) {
-      throw new Error(data.erreur || "Erreur HTTP " + response.status);
+      throw new Error(
+        data.erreur || "Erreur du serveur : " + response.status
+      );
     }
 
-    const text = typeof data.reponse === "string"
-      ? data.reponse
-      : "";
-
-    if (!text) throw new Error("Réponse Gemini vide.");
-
-    if (mode === "plan") {
-      output.textContent = text;
-      statusBox.textContent = "Analyse terminée.";
-    } else {
-      const html = cleanHtml(text);
-
-      if (!/<html[\s>]/i.test(html) ||
-          !/<body[\s>]/i.test(html)) {
-        throw new Error("Le résultat n'est pas un document HTML complet.");
-      }
-
-      generatedHtml = html;
-      output.textContent = html;
-      preview.srcdoc = html;
-      statusBox.textContent =
-        "Site généré. Vérifie son aperçu avant publication.";
+    if (typeof data.reponse !== "string" || !data.reponse.trim()) {
+      throw new Error("L'IA n'a renvoyé aucun résultat.");
     }
+
+    const html = extractHtml(data.reponse);
+
+    if (!isCompleteHtml(html)) {
+      throw new Error(
+        "L'IA n'a pas fourni un document HTML complet. Essaie une demande plus précise."
+      );
+    }
+
+    generatedHtml = html;
+    codeBox.textContent = html;
+    preview.srcdoc = html;
+
+    previewState.textContent = "Site prêt";
+    setStatus(
+      isRevision
+        ? "Modifications terminées ! Tu peux vérifier l'aperçu."
+        : "Ton site est créé ! Vérifie l'aperçu et télécharge le HTML.",
+      "success"
+    );
+
+    generateButton.textContent = "Modifier mon site";
   } catch (error) {
-    statusBox.textContent =
+    previewState.textContent = "Erreur";
+
+    setStatus(
       error.name === "AbortError"
-        ? "Délai dépassé. Réessaie."
-        : error.message || "Erreur de connexion à l'API Vercel.";
+        ? "La demande a pris trop de temps. Réessaie."
+        : error.message || "Impossible de contacter le serveur.",
+      "error"
+    );
   } finally {
     clearTimeout(timeout);
-    button.disabled = false;
-    button.textContent = "Créer avec Gemini";
+    isBusy = false;
+    generateButton.disabled = false;
+    resetButton.disabled = false;
+
+    if (!generatedHtml) {
+      generateButton.textContent = "Créer mon site";
+    } else {
+      generateButton.textContent = "Modifier mon site";
+    }
   }
+}
+
+form.addEventListener("submit", generateSite);
+
+resetButton.addEventListener("click", () => {
+  if (isBusy) return;
+
+  generatedHtml = "";
+  missionInput.value = "";
+  codeBox.textContent = "Aucun code généré pour le moment.";
+
+  preview.srcdoc =
+    "<!doctype html><html lang='fr'><body style='font-family:system-ui;padding:30px;color:#24304a'><h1>Bienvenue sur SitePilot IA</h1><p>Décris ton idée pour créer un nouveau site.</p></body></html>";
+
+  previewState.textContent = "En attente";
+  generateButton.textContent = "Créer mon site";
+  setStatus("Nouveau projet prêt.");
+
+  missionInput.focus();
 });
 
-document.getElementById("download").addEventListener("click", () => {
+downloadButton.addEventListener("click", () => {
   if (!generatedHtml) {
-    statusBox.textContent = "Génère d'abord un site HTML.";
+    setStatus("Crée d'abord un site avant de le télécharger.", "error");
     return;
   }
 
-  const blob = new Blob([generatedHtml], {
-    type: "text/html;charset=utf-8"
-  });
+  const blob = new Blob(
+    [generatedHtml],
+    { type: "text/html;charset=utf-8" }
+  );
+
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
+
   link.href = url;
   link.download = "index.html";
+
+  document.body.appendChild(link);
   link.click();
-  URL.revokeObjectURL(url);
+  link.remove();
+
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+  setStatus("Téléchargement du fichier HTML lancé.", "success");
+});
+
+copyPromptButton.addEventListener("click", async () => {
+  const text = missionInput.value.trim();
+
+  if (!text) {
+    setStatus("Écris d'abord ta demande.", "error");
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(text);
+    setStatus("Demande copiée.", "success");
+  } catch {
+    setStatus("Impossible de copier automatiquement. Sélectionne le texte.", "error");
+  }
+});
+
+copyCodeButton.addEventListener("click", async () => {
+  if (!generatedHtml) {
+    setStatus("Aucun code à copier.", "error");
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(generatedHtml);
+    setStatus("Code HTML copié.", "success");
+  } catch {
+    setStatus("Impossible de copier le code automatiquement.", "error");
+  }
 });
 </script>
+
 </body>
 </html>
