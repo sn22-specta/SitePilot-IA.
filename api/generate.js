@@ -9,11 +9,11 @@ module.exports = async function handler(req, res) {
     });
   }
 
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = process.env.OPENAI_API_KEY;
 
   if (!apiKey) {
     return res.status(500).json({
-      erreur: "Configure GEMINI_API_KEY dans Vercel."
+      erreur: "Configure OPENAI_API_KEY dans Vercel."
     });
   }
 
@@ -22,7 +22,6 @@ module.exports = async function handler(req, res) {
     typeof body.mission === "string"
       ? body.mission.trim()
       : "";
-
   const mode = body.mode;
 
   if (!["generate", "plan", "revise"].includes(mode)) {
@@ -38,44 +37,37 @@ module.exports = async function handler(req, res) {
   }
 
   const model =
-    process.env.GEMINI_MODEL || "gemini-2.5-flash";
+    process.env.OPENAI_MODEL || "gpt-4.1-mini";
+
+  const instructions = [
+    "Tu es SitePilot IA, expert en création web.",
+    "Réponds en français.",
+    "Pour le mode plan, donne un plan structuré.",
+    "Pour les modes generate et revise, fournis un document HTML complet.",
+    "Le HTML doit inclure le CSS et le JavaScript nécessaires.",
+    "Pour generate et revise, retourne uniquement le HTML, sans Markdown.",
+    "Ne révèle jamais les clés API ni les secrets.",
+    "N'affirme pas avoir exécuté une action non réalisée.",
+    "Ne prétends pas qu'un paiement, un compte ou un backend fonctionne s'il ne fonctionne pas.",
+    "Respecte précisément la demande de l'utilisateur."
+  ].join(" ");
 
   try {
     const response = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/" +
-        encodeURIComponent(model) +
-        ":generateContent",
+      "https://api.openai.com/v1/responses",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-goog-api-key": apiKey
+          "Authorization": `Bearer ${apiKey}`
         },
         body: JSON.stringify({
-          systemInstruction: {
-            parts: [{
-              text: [
-                "Tu es SitePilot IA, expert en création web.",
-                "Réponds en français.",
-                "Pour plan, fournis une analyse structurée.",
-                "Pour generate et revise, retourne un document",
-                "HTML complet, sans Markdown.",
-                "Ne révèle aucune clé API ni aucun secret.",
-                "N'affirme pas avoir exécuté une action non réalisée.",
-                "N'invente pas de backend, de paiement ou de connexion fonctionnelle."
-              ].join(" ")
-            }]
-          },
-          contents: [{
-            role: "user",
-            parts: [{ text: mission }]
-          }],
-          generationConfig: {
-            temperature: 0.4,
-            maxOutputTokens: 8192
-          }
+          model,
+          instructions,
+          input: mission,
+          max_output_tokens: 8192
         }),
-        signal: AbortSignal.timeout(80000)
+        signal: AbortSignal.timeout(50000)
       }
     );
 
@@ -83,28 +75,51 @@ module.exports = async function handler(req, res) {
 
     if (!response.ok) {
       console.error(
-        "Gemini API error:",
+        "OpenAI API error:",
         response.status,
-        data.error?.status || "API_ERROR"
+        data.error?.code || data.error?.type || "API_ERROR"
       );
 
+      if (response.status === 401) {
+        return res.status(502).json({
+          erreur: "Clé OpenAI invalide. Vérifie OPENAI_API_KEY dans Vercel."
+        });
+      }
+
+      if (response.status === 429) {
+        return res.status(502).json({
+          erreur: "Limite ou quota OpenAI atteint. Vérifie ton usage et ta facturation API."
+        });
+      }
+
+      if (response.status === 403) {
+        return res.status(502).json({
+          erreur: "Accès OpenAI refusé. Vérifie les autorisations du projet."
+        });
+      }
+
+      if (response.status === 404) {
+        return res.status(502).json({
+          erreur: "Modèle OpenAI indisponible. Vérifie OPENAI_MODEL."
+        });
+      }
+
       return res.status(502).json({
-        erreur:
-          "Gemini a refusé la demande. Vérifie la clé, " +
-          "le modèle et les quotas dans Google AI Studio."
+        erreur: "Erreur OpenAI. Consulte les journaux Vercel."
       });
     }
 
-    const texte = (
-      data.candidates?.[0]?.content?.parts || []
-    )
+    const texte = (data.output || [])
+      .filter(item => item.type === "message")
+      .flatMap(item => item.content || [])
+      .filter(part => part.type === "output_text")
       .map(part => part.text || "")
       .join("")
       .trim();
 
     if (!texte) {
       return res.status(502).json({
-        erreur: "Gemini n'a renvoyé aucun texte."
+        erreur: "OpenAI n'a renvoyé aucun texte."
       });
     }
 
@@ -119,8 +134,8 @@ module.exports = async function handler(req, res) {
       erreur:
         error.name === "TimeoutError" ||
         error.name === "AbortError"
-          ? "Le délai de réponse de Gemini est dépassé."
-          : "Impossible de contacter Gemini."
+          ? "Le délai de réponse OpenAI est dépassé."
+          : "Impossible de contacter OpenAI."
     });
   }
 };
