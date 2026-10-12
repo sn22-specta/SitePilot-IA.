@@ -1,647 +1,135 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#101827">
-<title>SitePilot IA — Créateur de projets web</title>
-
+<meta name="description" content="SitePilot IA aide à concevoir et prévisualiser des sites web.">
+<title>SitePilot IA — Créateur de sites web</title>
 <style>
-:root {
-  --bg: #0b1120;
-  --panel: #121c30;
-  --panel2: #18243b;
-  --text: #f4f7ff;
-  --muted: #a7b4cc;
-  --blue: #5685ff;
-  --cyan: #55d6d0;
-  --border: #2a3852;
-  --green: #5ce0a1;
-  --red: #ff8585;
-}
-
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: system-ui, Arial, sans-serif;
-  line-height: 1.6;
-}
-
-header {
-  padding: 22px 16px;
-  border-bottom: 1px solid var(--border);
-  background: #101827;
-}
-
-.header-inner, main, footer {
-  width: min(100% - 28px, 950px);
-  margin: auto;
-}
-
-.logo {
-  font-size: 23px;
-  font-weight: 800;
-  letter-spacing: -.5px;
-}
-
-.logo span { color: var(--cyan); }
-
-.tagline {
-  color: var(--muted);
-  margin-top: 3px;
-  font-size: 14px;
-}
-
-.hero {
-  padding: 35px 0 22px;
-}
-
-.hero h1 {
-  font-size: clamp(27px, 5vw, 42px);
-  line-height: 1.15;
-  margin: 0 0 13px;
-}
-
-.hero h1 span {
-  color: var(--cyan);
-}
-
-.hero p {
-  color: var(--muted);
-  max-width: 650px;
-}
-
-.badge {
-  display: inline-block;
-  padding: 5px 10px;
-  border-radius: 20px;
-  background: #183c3a;
-  color: var(--cyan);
-  font-size: 12px;
-  margin-bottom: 12px;
-}
-
-.layout {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 18px;
-  padding-bottom: 35px;
-}
-
-.card {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 20px;
-  min-width: 0;
-}
-
-.card h2 {
-  margin: 0 0 5px;
-  font-size: 21px;
-}
-
-.description {
-  margin: 0 0 20px;
-  color: var(--muted);
-  font-size: 14px;
-}
-
-label {
-  display: block;
-  margin: 16px 0 7px;
-  font-weight: 650;
-  font-size: 14px;
-}
-
-input, select, textarea {
-  display: block;
-  width: 100%;
-  padding: 13px 12px;
-  color: var(--text);
-  background: #0c1425;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  outline: none;
-  font: inherit;
-}
-
-input:focus, select:focus, textarea:focus {
-  border-color: var(--blue);
-  box-shadow: 0 0 0 2px #5685ff25;
-}
-
-textarea {
-  min-height: 95px;
-  resize: vertical;
-}
-
-button {
-  border: 0;
-  border-radius: 11px;
-  padding: 13px 16px;
-  font: inherit;
-  font-weight: 750;
-  cursor: pointer;
-  transition: opacity .2s, transform .2s;
-}
-
-button:active { transform: scale(.98); }
-button:disabled { opacity: .55; cursor: wait; }
-
-.primary {
-  color: white;
-  background: linear-gradient(120deg, #4776ff, #6b58ee);
-  width: 100%;
-  margin-top: 22px;
-}
-
-.secondary {
-  background: var(--panel2);
-  border: 1px solid var(--border);
-  color: var(--text);
-  font-size: 13px;
-}
-
-.examples {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 12px;
-}
-
-.example {
-  background: #17243a;
-  color: #dbe7ff;
-  border: 1px solid var(--border);
-  padding: 7px 10px;
-  font-size: 12px;
-}
-
-.status {
-  margin-top: 14px;
-  color: var(--muted);
-  font-size: 13px;
-  overflow-wrap: anywhere;
-}
-
-.status.error { color: var(--red); }
-.status.success { color: var(--green); }
-
-.result-card { margin-bottom: 30px; }
-
-.result-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 15px;
-}
-
-.result {
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-  background: #0c1425;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 16px;
-  min-height: 150px;
-  color: #e6edff;
-  font-size: 14px;
-}
-
-.empty {
-  color: #8494af;
-  display: grid;
-  place-items: center;
-  text-align: center;
-  min-height: 120px;
-}
-
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 12px;
-}
-
-.note {
-  border-left: 3px solid var(--cyan);
-  padding: 10px 12px;
-  background: #10252d;
-  color: #c9e9e7;
-  border-radius: 0 8px 8px 0;
-  font-size: 13px;
-  margin-top: 16px;
-}
-
-footer {
-  padding: 20px 0 30px;
-  color: var(--muted);
-  font-size: 12px;
-  border-top: 1px solid var(--border);
-}
-
-.hidden { display: none; }
-
-@media (min-width: 760px) {
-  .layout {
-    grid-template-columns: .95fr 1.05fr;
-    align-items: start;
-  }
-  .result-card { position: sticky; top: 12px; }
-  .card { padding: 25px; }
-}
+:root{--bg:#0b1120;--panel:#121c30;--panel2:#18243b;--text:#f4f7ff;--muted:#a7b4cc;--blue:#5685ff;--cyan:#55d6d0;--border:#2a3852;--green:#5ce0a1;--red:#ff8585}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,Arial,sans-serif;line-height:1.6}
+header{padding:18px 14px;border-bottom:1px solid var(--border);background:#101827}.header-inner,main,footer{width:min(100% - 26px,1100px);margin:auto}
+.logo{font-size:23px;font-weight:800;letter-spacing:-.5px}.logo span{color:var(--cyan)}.tagline{color:var(--muted);font-size:13px}
+.hero{padding:28px 0 18px}.hero h1{font-size:clamp(27px,5vw,42px);line-height:1.15;margin:0 0 12px}.hero h1 span{color:var(--cyan)}.hero p{color:var(--muted);max-width:700px}
+.badge{display:inline-block;padding:4px 10px;border-radius:20px;background:#183c3a;color:var(--cyan);font-size:12px;margin-bottom:10px}
+.layout{display:grid;grid-template-columns:1fr;gap:16px;padding-bottom:28px}.card{background:var(--panel);border:1px solid var(--border);border-radius:17px;padding:18px;min-width:0}.card h2{margin:0 0 5px;font-size:20px}.description{margin:0 0 16px;color:var(--muted);font-size:13px}
+label{display:block;margin:14px 0 6px;font-weight:650;font-size:14px}input,select,textarea{display:block;width:100%;padding:12px;color:var(--text);background:#0c1425;border:1px solid var(--border);border-radius:10px;outline:none;font:inherit}input:focus,select:focus,textarea:focus{border-color:var(--blue)}textarea{min-height:85px;resize:vertical}
+button{border:0;border-radius:10px;padding:11px 14px;font:inherit;font-weight:700;cursor:pointer}button:disabled{opacity:.55;cursor:wait}.primary{color:white;background:linear-gradient(120deg,#4776ff,#6b58ee);width:100%;margin-top:18px}.secondary{background:var(--panel2);border:1px solid var(--border);color:var(--text);font-size:13px}.examples,.actions,.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.example{background:#17243a;color:#dbe7ff;border:1px solid var(--border);padding:7px 10px;font-size:12px}
+.status{margin-top:12px;color:var(--muted);font-size:13px;overflow-wrap:anywhere}.status.error{color:var(--red)}.status.success{color:var(--green)}.note{border-left:3px solid var(--cyan);padding:10px 12px;background:#10252d;color:#c9e9e7;border-radius:0 8px 8px 0;font-size:12px;margin-top:15px}
+.tabs button{flex:1;min-width:100px}.tabs button[aria-selected="true"]{background:var(--blue);color:white;border-color:var(--blue)}
+.result{white-space:pre-wrap;overflow-wrap:anywhere;background:#0c1425;border:1px solid var(--border);border-radius:12px;padding:14px;min-height:130px;color:#e6edff;font-size:13px}
+.preview-wrap{background:white;border-radius:12px;overflow:hidden;border:1px solid var(--border)}iframe{display:block;width:100%;height:480px;border:0;background:white}.code{width:100%;min-height:250px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;white-space:pre;overflow:auto}
+.hidden{display:none!important}.small{font-size:12px;color:var(--muted)}footer{padding:18px 0 26px;color:var(--muted);font-size:12px;border-top:1px solid var(--border)}
+@media(min-width:800px){.layout{grid-template-columns:.9fr 1.1fr;align-items:start}.card{padding:22px}.result-card{position:sticky;top:10px}iframe{height:560px}}
 </style>
 </head>
-
 <body>
-<header>
-  <div class="header-inner">
-    <div class="logo">SitePilot <span>IA</span></div>
-    <div class="tagline">Ton assistant pour préparer et concevoir des projets web.</div>
-  </div>
-</header>
-
+<header><div class="header-inner"><div class="logo">SitePilot <span>IA</span></div><div class="tagline">Décris ton idée, génère un site et vérifie-le avant publication.</div></div></header>
 <main>
-  <section class="hero">
-    <div class="badge">✦ Assistant IA pour projets web</div>
-    <h1>Transforme ton idée en <span>plan concret.</span></h1>
-    <p>
-      Décris ton projet. SitePilot IA t'aide à définir les fonctionnalités,
-      l'organisation des pages, les outils à utiliser et les prochaines étapes.
-    </p>
-  </section>
-
-  <section class="layout">
-    <div class="card">
-      <h2>Ton projet</h2>
-      <p class="description">
-        Renseigne les informations principales pour obtenir une analyse personnalisée.
-      </p>
-
-      <form id="projectForm">
-        <label for="projectName">Nom du projet *</label>
-        <input id="projectName" maxlength="100"
-          placeholder="Ex. : Ma boutique en ligne" required>
-
-        <label for="projectType">Type de projet *</label>
-        <select id="projectType" required>
-          <option value="Site vitrine">Site vitrine</option>
-          <option value="Commerce en ligne">Commerce en ligne</option>
-          <option value="Blog">Blog</option>
-          <option value="Application web">Application web</option>
-          <option value="Plateforme éducative">Plateforme éducative</option>
-          <option value="Outil d'intelligence artificielle">Outil d'intelligence artificielle</option>
-          <option value="Autre">Autre</option>
-        </select>
-
-        <label for="audience">Public cible</label>
-        <input id="audience" maxlength="250"
-          placeholder="Ex. : particuliers et entreprises au Sénégal">
-
-        <label for="features">Fonctionnalités souhaitées *</label>
-        <textarea id="features" maxlength="1500" required
-          placeholder="Ex. : catalogue, inscription, espace client, paiement, commandes WhatsApp..."></textarea>
-
-        <label for="budget">Budget disponible</label>
-        <select id="budget">
-          <option value="Très faible ou gratuit">Très faible ou gratuit</option>
-          <option value="Petit budget">Petit budget</option>
-          <option value="Budget moyen">Budget moyen</option>
-          <option value="Budget important">Budget important</option>
-          <option value="À déterminer">À déterminer</option>
-        </select>
-
-        <label for="level">Ton niveau en programmation</label>
-        <select id="level">
-          <option value="Débutant">Débutant</option>
-          <option value="Intermédiaire">Intermédiaire</option>
-          <option value="Avancé">Avancé</option>
-        </select>
-
-        <label for="extra">Informations supplémentaires</label>
-        <textarea id="extra" maxlength="1000"
-          placeholder="Style visuel, délai, outils préférés, contraintes..."></textarea>
-
-        <button class="primary" id="analyzeButton" type="submit">
-          ✦ Analyser mon projet
-        </button>
-
-        <div class="examples">
-          <button class="example" type="button" data-example="shop">Boutique en ligne</button>
-          <button class="example" type="button" data-example="school">Plateforme scolaire</button>
-          <button class="example" type="button" data-example="ai">Agent IA</button>
-        </div>
-
-        <div class="status" id="status" role="status" aria-live="polite">
-          Prêt à analyser ton projet.
-        </div>
-      </form>
-    </div>
-
-    <div class="card result-card">
-      <div class="result-top">
-        <div>
-          <h2>Analyse du projet</h2>
-          <div class="description" style="margin:4px 0 0">
-            Le résultat apparaîtra ici.
-          </div>
-        </div>
-        <span class="badge">SitePilot IA</span>
-      </div>
-
-      <div id="result" class="result" aria-live="polite">
-        <div class="empty">
-          <div>
-            <div style="font-size:32px">✧</div>
-            <strong>Ton espace de travail</strong>
-            <p>Complète le formulaire puis lance l'analyse.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="actions">
-        <button class="secondary" id="copyButton" type="button">
-          Copier le résultat
-        </button>
-        <button class="secondary" id="downloadButton" type="button">
-          Télécharger en TXT
-        </button>
-        <button class="secondary" id="clearButton" type="button">
-          Effacer
-        </button>
-      </div>
-
-      <div class="note">
-        L'IA propose un plan et des recommandations. Elle ne crée pas
-        automatiquement le site ni ne réalise de paiement à ta place.
-      </div>
-    </div>
-  </section>
+<section class="hero">
+<div class="badge">✦ Assistant de création web</div>
+<h1>De ton idée à un <span>site prévisualisable.</span></h1>
+<p>Décris ton projet pour obtenir un plan ou demander à l'IA de générer une première page HTML. Vérifie toujours l'aperçu avant de réutiliser ou publier le code.</p>
+</section>
+<section class="layout">
+<div class="card">
+<h2>Ton projet</h2><p class="description">Les informations ci-dessous servent à préparer le plan ou la génération du site.</p>
+<form id="projectForm">
+<label for="projectName">Nom du projet *</label><input id="projectName" maxlength="100" placeholder="Ex. : Boutique Sénégal" required>
+<label for="projectType">Type de projet *</label><select id="projectType"><option>Site vitrine</option><option>Commerce en ligne</option><option>Blog</option><option>Application web</option><option>Plateforme éducative</option><option>Outil d'intelligence artificielle</option><option>Autre</option></select>
+<label for="audience">Public cible</label><input id="audience" maxlength="250" placeholder="Ex. : particuliers et entreprises au Sénégal">
+<label for="features">Fonctionnalités ou description souhaitées *</label><textarea id="features" maxlength="1800" required placeholder="Ex. : accueil, catalogue, formulaire de contact, commande WhatsApp..."></textarea>
+<label for="budget">Budget disponible</label><select id="budget"><option>Très faible ou gratuit</option><option>Petit budget</option><option>Budget moyen</option><option>Budget important</option><option>À déterminer</option></select>
+<label for="level">Niveau en programmation</label><select id="level"><option>Débutant</option><option>Intermédiaire</option><option>Avancé</option></select>
+<label for="extra">Style et informations supplémentaires</label><textarea id="extra" maxlength="1000" placeholder="Couleurs, pages, délai, contraintes..."></textarea>
+<label for="mode">Que veux-tu faire ?</label><select id="mode"><option value="generate">Générer une page HTML avec aperçu</option><option value="plan">Analyser et planifier le projet</option><option value="revise">Améliorer le code HTML déjà généré</option></select>
+<label for="revision">Code HTML existant (facultatif, pour l'améliorer)</label><textarea id="revision" maxlength="25000" placeholder="Colle ici le code HTML existant si tu as choisi « Améliorer le code »." style="min-height:110px"></textarea>
+<button class="primary" id="submitButton" type="submit">✦ Lancer SitePilot IA</button>
+<div class="examples"><button class="example" type="button" data-example="shop">Boutique en ligne</button><button class="example" type="button" data-example="school">Plateforme scolaire</button><button class="example" type="button" data-example="ai">Agent IA</button></div>
+<div class="status" id="status" role="status" aria-live="polite">Prêt. Choisis une action et décris ton projet.</div>
+</form>
+<div class="note"><strong>Important :</strong> cette interface appelle ton Worker Cloudflare. La génération IA ne fonctionnera que si le Worker est en ligne, accepte les requêtes du site et renvoie le texte dans un champ reconnu. Ne colle pas de clés API ni de mots de passe dans ce formulaire.</div>
+</div>
+<div class="card result-card">
+<div class="result-top"><h2>Résultat</h2><span class="badge">Espace de travail</span></div>
+<div class="tabs" role="tablist" aria-label="Affichage du résultat">
+<button class="secondary" type="button" data-tab="preview" aria-selected="true">Aperçu</button><button class="secondary" type="button" data-tab="code" aria-selected="false">Code HTML</button><button class="secondary" type="button" data-tab="analysis" aria-selected="false">Plan / analyse</button>
+</div>
+<div id="previewPanel"><p class="small">L'aperçu s'affichera ici après génération du HTML.</p><div class="preview-wrap"><iframe id="previewFrame" title="Aperçu du site généré" sandbox="" referrerpolicy="no-referrer" srcdoc="<!doctype html><html lang='fr'><meta charset='utf-8'><body style='font-family:system-ui;padding:28px;color:#334155'><h2>Ton aperçu apparaîtra ici</h2><p>Décris ton site puis appuie sur « Lancer SitePilot IA ».</p></body></html>"></iframe></div></div>
+<div id="codePanel" class="hidden"><label for="codeOutput">Code HTML généré</label><textarea id="codeOutput" class="code" readonly placeholder="Le code HTML apparaîtra ici."></textarea></div>
+<div id="analysisPanel" class="hidden"><div id="analysisOutput" class="result">Ton plan de projet apparaîtra ici.</div></div>
+<div class="actions"><button class="secondary" id="copyButton" type="button">Copier le code</button><button class="secondary" id="downloadButton" type="button">Télécharger index.html</button><button class="secondary" id="downloadPlanButton" type="button">Télécharger le plan TXT</button><button class="secondary" id="clearButton" type="button">Effacer les résultats</button></div>
+<div class="note">L'aperçu est isolé dans un cadre sandboxé. Il ne publie rien. Le bouton de téléchargement enregistre le HTML sur ton appareil ; la mise en ligne doit être effectuée séparément et seulement après vérification.</div>
+</div>
+</section>
 </main>
-
-<footer>
-  SitePilot IA — Prototype d'assistant de conception web.
-  Ne saisis pas de mots de passe, de clés API ou de données confidentielles.
-</footer>
-
+<footer>SitePilot IA — Prototype de création et prévisualisation web. Les intégrations de paiement, comptes utilisateurs et données réelles nécessitent une implémentation et des tests séparés.</footer>
 <script>
 "use strict";
-
-// Adresse de TON Worker Cloudflare.
-const WORKER_URL =
-  "https://sitepilot-ia-agent.papemoussaamar1.workers.dev";
-
-const form = document.getElementById("projectForm");
-const statusBox = document.getElementById("status");
-const resultBox = document.getElementById("result");
-const analyzeButton = document.getElementById("analyzeButton");
-
-let lastResult = "";
-
-function setStatus(message, type = "") {
-  statusBox.textContent = message;
-  statusBox.className = "status" + (type ? " " + type : "");
+const WORKER_URL="https://sitepilot-ia-agent.papemoussaamar1.workers.dev";
+const form=document.getElementById("projectForm"),statusBox=document.getElementById("status"),submitButton=document.getElementById("submitButton");
+const codeOutput=document.getElementById("codeOutput"),analysisOutput=document.getElementById("analysisOutput"),previewFrame=document.getElementById("previewFrame");
+let lastHtml="",lastPlan="";
+function setStatus(msg,type=""){statusBox.textContent=msg;statusBox.className="status"+(type?" "+type:"")}
+function getProject(){return {nom:document.getElementById("projectName").value.trim(),type:document.getElementById("projectType").value,public:document.getElementById("audience").value.trim(),fonctionnalites:document.getElementById("features").value.trim(),budget:document.getElementById("budget").value,niveau:document.getElementById("level").value,informations:document.getElementById("extra").value.trim(),mode:document.getElementById("mode").value,revision:document.getElementById("revision").value.trim()}}
+function buildPrompt(p){
+const common=`Tu es SitePilot IA, un expert en création web. Réponds en français. Projet : ${p.nom}. Type : ${p.type}. Public : ${p.public||"à préciser"}. Besoins : ${p.fonctionnalites}. Budget : ${p.budget}. Niveau : ${p.niveau}. Informations : ${p.informations||"aucune"}.`;
+if(p.mode==="plan")return `${common}\nCrée une analyse concrète : résumé, public cible, fonctionnalités prioritaires, pages, design, technologies adaptées au budget, étapes de réalisation, structure de fichiers, tests, sécurité et trois premières actions. N'affirme pas avoir réalisé des actions que tu n'as pas faites.`;
+if(p.mode==="revise")return `${common}\nAméliore le HTML fourni ci-dessous. Retourne un document HTML complet, autonome et directement enregistrable comme index.html. Réponds avec le code HTML seulement, sans Markdown, sans balises de code ni explications avant/après. Évite les clés API et les secrets côté navigateur. CODE EXISTANT:\n${p.revision||"(aucun code fourni)"}`;
+return `${common}\nGénère un site vitrine/front-end en un seul document HTML complet avec CSS et JavaScript intégrés, design moderne et responsive, contenu en français, navigation utilisable et interactions réalistes. Utilise des données de démonstration ; ne prétends pas que les paiements, comptes, formulaires ou données serveur fonctionnent s'ils ne sont pas connectés à un backend. Ne mets aucune clé API ou secret dans le code. Retourne UNIQUEMENT le HTML complet, commençant par <!DOCTYPE html>, sans Markdown ni bloc de code.`;
 }
-
-function getProject() {
-  return {
-    nom: document.getElementById("projectName").value.trim(),
-    type: document.getElementById("projectType").value,
-    public: document.getElementById("audience").value.trim(),
-    fonctionnalites: document.getElementById("features").value.trim(),
-    budget: document.getElementById("budget").value,
-    niveau: document.getElementById("level").value,
-    informations: document.getElementById("extra").value.trim()
-  };
+function extractText(data){
+if(typeof data==="string")return data;
+if(!data||typeof data!=="object")return "";
+for(const key of ["reponse","response","text","output","content","result","message"])if(typeof data[key]==="string"&&data[key].trim())return data[key].trim();
+if(data.candidates?.[0]?.content?.parts){return data.candidates[0].content.parts.map(x=>x.text||"").join("\n").trim()}
+return "";
 }
-
-function buildPrompt(p) {
-  return `
-Tu es SitePilot IA, un expert en conception de sites web et d'applications.
-Réponds en français, avec des explications simples et des étapes concrètes.
-Adapte tes recommandations au niveau et au budget de l'utilisateur.
-N'invente pas de prix précis ni de services prétendument vérifiés.
-Si une information manque, indique les hypothèses.
-
-PROJET
-Nom : ${p.nom}
-Type : ${p.type}
-Public cible : ${p.public || "À préciser"}
-Fonctionnalités : ${p.fonctionnalites}
-Budget : ${p.budget}
-Niveau en programmation : ${p.niveau}
-Informations supplémentaires : ${p.informations || "Aucune"}
-
-Prépare une analyse structurée comprenant :
-1. Résumé de l'idée et objectif principal.
-2. Public cible et besoins à résoudre.
-3. Liste des fonctionnalités indispensables, puis secondaires.
-4. Pages nécessaires et contenu de chaque page.
-5. Proposition de design et navigation.
-6. Technologies recommandées, en privilégiant les options simples
-   et peu coûteuses si le budget est limité.
-7. Plan de réalisation par étapes, dans l'ordre.
-8. Structure de fichiers recommandée.
-9. Vérifications et tests à effectuer avant publication.
-10. Risques, sécurité, confidentialité et coûts à prévoir.
-11. Trois premières actions que l'utilisateur peut effectuer aujourd'hui.
-
-Sois concret, pédagogique et réaliste. Ne prétends pas avoir créé,
-publié ou testé le site si tu ne l'as pas réellement fait.
-`;
+function cleanHtml(text){
+let s=text.trim().replace(/^```(?:html)?\s*/i,"").replace(/\s*```$/,"").trim();
+const start=s.toLowerCase().indexOf("<!doctype html");
+if(start>=0)s=s.slice(start);
+else {const htmlStart=s.toLowerCase().indexOf("<html");if(htmlStart>=0)s="<!DOCTYPE html>\n"+s.slice(htmlStart)}
+return s;
 }
-
-function showResult(text) {
-  lastResult = text;
-  resultBox.textContent = text;
+function showHtml(html){lastHtml=html;codeOutput.value=html;previewFrame.srcdoc=html;selectTab("preview")}
+function selectTab(name){document.querySelectorAll("[data-tab]").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.tab===name)));document.getElementById("previewPanel").classList.toggle("hidden",name!=="preview");document.getElementById("codePanel").classList.toggle("hidden",name!=="code");document.getElementById("analysisPanel").classList.toggle("hidden",name!=="analysis")}
+document.querySelectorAll("[data-tab]").forEach(b=>b.addEventListener("click",()=>selectTab(b.dataset.tab)));
+form.addEventListener("submit",async e=>{
+e.preventDefault();const p=getProject();
+if(!p.nom||!p.fonctionnalites){setStatus("Remplis le nom et la description du projet.","error");return}
+if(p.mode==="revise"&&!p.revision){setStatus("Colle d'abord ton HTML existant dans le champ prévu.","error");return}
+submitButton.disabled=true;submitButton.textContent="Travail en cours...";setStatus("Connexion au service IA...");
+try{
+const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),90000);
+let response;
+try{response=await fetch(WORKER_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({mission:buildPrompt(p),mode:p.mode,project:p}),signal:controller.signal})}finally{clearTimeout(timeout)}
+const raw=await response.text();let data;try{data=JSON.parse(raw)}catch{throw new Error("Le Worker n'a pas renvoyé de JSON. Vérifie son code et sa réponse.")}
+if(!response.ok)throw new Error(data.erreur||data.error||`Erreur HTTP ${response.status}`);
+const text=extractText(data);if(!text)throw new Error("Aucun texte reconnu dans la réponse du Worker. Le Worker doit renvoyer le texte dans reponse, response, text ou output.");
+if(p.mode==="plan"){lastPlan=text;analysisOutput.textContent=text;selectTab("analysis");setStatus("Analyse reçue. Vérifie les recommandations.","success")}
+else{
+const html=cleanHtml(text);
+if(!/<html[\s>]/i.test(html)||!/<body[\s>]/i.test(html))throw new Error("La réponse reçue ne ressemble pas à un document HTML complet. Demande au Worker de retourner uniquement le HTML complet, sans Markdown.");
+showHtml(html);lastPlan=`Projet : ${p.nom}\nType : ${p.type}\nDescription : ${p.fonctionnalites}\n\nCode HTML généré. Vérifie les formulaires et les interactions avant publication.`;analysisOutput.textContent=lastPlan;setStatus("HTML généré et aperçu chargé. Rien n'a été publié.","success")
 }
-
-function localFallback(p) {
-  return `PLAN INITIAL — ${p.nom}
-
-1. OBJECTIF
-Construire un projet de type ${p.type}, destiné à :
-${p.public || "un public à définir"}.
-
-2. FONCTIONNALITÉS
-Priorité donnée à :
-${p.fonctionnalites}
-
-3. BUDGET ET NIVEAU
-Budget : ${p.budget}
-Niveau : ${p.niveau}
-
-4. PLAN DE DÉPART
-- Étape 1 : préciser les besoins et les utilisateurs.
-- Étape 2 : dessiner les pages principales.
-- Étape 3 : préparer le HTML pour la structure.
-- Étape 4 : utiliser le CSS pour le design responsive.
-- Étape 5 : utiliser JavaScript pour les interactions.
-- Étape 6 : tester sur téléphone et ordinateur.
-- Étape 7 : choisir un hébergement adapté et publier.
-- Étape 8 : vérifier la sécurité et les formulaires.
-
-5. PROCHAINE ACTION
-Décris précisément chaque fonctionnalité et décide laquelle est
-la plus importante pour la première version.
-
-Note : ce résultat est un plan de secours local. Pour une analyse
-générée par Gemini, vérifie la connexion au Worker Cloudflare.`;
-}
-
-form.addEventListener("submit", async function(event) {
-  event.preventDefault();
-
-  const p = getProject();
-
-  if (!p.nom || !p.fonctionnalites) {
-    setStatus("Remplis le nom du projet et les fonctionnalités.", "error");
-    return;
-  }
-
-  analyzeButton.disabled = true;
-  analyzeButton.textContent = "Analyse en cours...";
-  setStatus("Connexion à SitePilot IA et demande d'analyse...");
-
-  try {
-    const response = await fetch(WORKER_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ mission: buildPrompt(p) })
-    });
-
-    let data;
-    try {
-      data = await response.json();
-    } catch {
-      throw new Error("Réponse illisible du Worker. Vérifie son code.");
-    }
-
-    if (!response.ok) {
-      throw new Error(data.erreur || "Le service IA a refusé la requête.");
-    }
-
-    if (!data.reponse) {
-      throw new Error("Aucun texte reçu. Vérifie la connexion à Gemini.");
-    }
-
-    showResult(data.reponse);
-    setStatus("Analyse reçue du service IA.", "success");
-
-  } catch (error) {
-    console.error("SitePilot IA :", error);
-
-    showResult(
-      "La connexion à Gemini n'a pas abouti.\n\n" +
-      "Détail : " + (error.message || "Erreur de connexion") +
-      "\n\nVérifie que le Worker est déployé, que le secret " +
-      "GEMINI_API_KEY est configuré et que le navigateur autorise " +
-      "la connexion. Si le site est publié, vérifie aussi les règles CORS."
-    );
-
-    setStatus("Échec de la connexion au service IA.", "error");
-  } finally {
-    analyzeButton.disabled = false;
-    analyzeButton.textContent = "✦ Analyser mon projet";
-  }
+}catch(err){const msg=err.name==="AbortError"?"Le service a mis trop de temps à répondre. Réessaie ou vérifie le Worker.":(err.message||"Erreur inconnue");setStatus(msg,"error");analysisOutput.textContent="Échec de la génération : "+msg+"\n\nVérifie le déploiement du Worker, son secret Gemini et les règles CORS. Le HTML seul ne peut pas remplacer le backend IA." ;selectTab("analysis")}
+finally{submitButton.disabled=false;submitButton.textContent="✦ Lancer SitePilot IA"}
 });
-
-document.querySelectorAll("[data-example]").forEach(button => {
-  button.addEventListener("click", () => {
-    const type = button.dataset.example;
-
-    if (type === "shop") {
-      document.getElementById("projectName").value = "Boutique Sénégal";
-      document.getElementById("projectType").value = "Commerce en ligne";
-      document.getElementById("audience").value = "Clients au Sénégal";
-      document.getElementById("features").value =
-        "Catalogue produits, recherche, panier, commande WhatsApp, " +
-        "gestion des produits et interface adaptée aux téléphones.";
-      document.getElementById("budget").value = "Très faible ou gratuit";
-    }
-
-    if (type === "school") {
-      document.getElementById("projectName").value = "École numérique";
-      document.getElementById("projectType").value = "Plateforme éducative";
-      document.getElementById("audience").value = "Élèves et enseignants";
-      document.getElementById("features").value =
-        "Cours, exercices, ressources pédagogiques, suivi des progrès " +
-        "et espace enseignant.";
-    }
-
-    if (type === "ai") {
-      document.getElementById("projectName").value = "Mon agent IA";
-      document.getElementById("projectType").value =
-        "Outil d'intelligence artificielle";
-      document.getElementById("audience").value = "Étudiants et entrepreneurs";
-      document.getElementById("features").value =
-        "Zone de discussion, réponses générées par un LLM, historique " +
-        "des échanges et interface mobile.";
-    }
-
-    setStatus("Exemple chargé. Tu peux modifier les informations.");
-  });
-});
-
-document.getElementById("copyButton").addEventListener("click", async () => {
-  if (!lastResult) {
-    setStatus("Aucun résultat à copier.", "error");
-    return;
-  }
-
-  try {
-    await navigator.clipboard.writeText(lastResult);
-    setStatus("Résultat copié.", "success");
-  } catch {
-    const area = document.createElement("textarea");
-    area.value = lastResult;
-    document.body.appendChild(area);
-    area.select();
-
-    try {
-      const ok = document.execCommand("copy");
-      setStatus(ok ? "Résultat copié." : "Sélectionne et copie le texte.");
-    } catch {
-      setStatus("Sélectionne le résultat pour le copier.");
-    }
-
-    area.remove();
-  }
-});
-
-document.getElementById("downloadButton").addEventListener("click", () => {
-  if (!lastResult) {
-    setStatus("Aucun résultat à télécharger.", "error");
-    return;
-  }
-
-  const blob = new Blob([lastResult], {
-    type: "text/plain;charset=utf-8"
-  });
-
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = "analyse-sitepilot-ia.txt";
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  URL.revokeObjectURL(url);
-  setStatus("Téléchargement préparé.", "success");
-});
-
-document.getElementById("clearButton").addEventListener("click", () => {
-  lastResult = "";
-  resultBox.textContent = "Ton résultat apparaîtra ici.";
-  setStatus("Résultat effacé.");
-});
+document.querySelectorAll("[data-example]").forEach(b=>b.addEventListener("click",()=>{
+const type=b.dataset.example;
+if(type==="shop"){document.getElementById("projectName").value="Boutique Sénégal";document.getElementById("projectType").value="Commerce en ligne";document.getElementById("audience").value="Clients au Sénégal";document.getElementById("features").value="Page d'accueil, catalogue de produits, filtres, panier de démonstration, commande WhatsApp et design adapté aux téléphones."}
+if(type==="school"){document.getElementById("projectName").value="École numérique";document.getElementById("projectType").value="Plateforme éducative";document.getElementById("audience").value="Élèves et enseignants";document.getElementById("features").value="Présentation des cours, catégories, ressources pédagogiques, exercices de démonstration et espace enseignant visuel."}
+if(type==="ai"){document.getElementById("projectName").value="Mon agent IA";document.getElementById("projectType").value="Outil d'intelligence artificielle";document.getElementById("audience").value="Étudiants et entrepreneurs";document.getElementById("features").value="Interface de discussion moderne, zone de saisie, historique de démonstration et design responsive. Signaler clairement que le backend IA est à connecter."}
+setStatus("Exemple chargé. Tu peux modifier les informations.")
+}));
+async function copyText(text){if(!text){setStatus("Il n'y a rien à copier.","error");return}try{await navigator.clipboard.writeText(text);setStatus("Copié dans le presse-papiers.","success")}catch{const t=document.createElement("textarea");t.value=text;document.body.appendChild(t);t.select();const ok=document.execCommand("copy");t.remove();setStatus(ok?"Copié.":"Sélectionne le texte puis copie-le.",ok?"success":"error")}}
+document.getElementById("copyButton").addEventListener("click",()=>copyText(lastHtml));
+function download(name,text,type){if(!text){setStatus("Aucun contenu à télécharger.","error");return}const blob=new Blob([text],{type}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);setStatus("Fichier préparé pour téléchargement.","success")}
+document.getElementById("downloadButton").addEventListener("click",()=>download("index.html",lastHtml,"text/html;charset=utf-8"));
+document.getElementById("downloadPlanButton").addEventListener("click",()=>download("plan-sitepilot-ia.txt",lastPlan,"text/plain;charset=utf-8"));
+document.getElementById("clearButton").addEventListener("click",()=>{lastHtml="";lastPlan="";codeOutput.value="";analysisOutput.textContent="Ton plan de projet apparaîtra ici.";previewFrame.srcdoc="<!doctype html><html lang='fr'><meta charset='utf-8'><body style='font-family:system-ui;padding:28px;color:#334155'><h2>Ton aperçu apparaîtra ici</h2><p>Décris ton site puis appuie sur « Lancer SitePilot IA ».</p></body></html>";selectTab("preview");setStatus("Résultats effacés.")});
 </script>
 </body>
 </html>
